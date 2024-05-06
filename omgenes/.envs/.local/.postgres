@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=omgenes
+POSTGRES_USER=WIZryOrOKGBJWvTCmzLZJaXEXMWeqlLJ
+POSTGRES_PASSWORD=cVaKA3E1ajVW1PNqB8SoLuyLxgFrmN4a5W0MQlj4VGSuhqcM8Ceq8CCudor4m3KR
