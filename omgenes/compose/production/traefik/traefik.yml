@@ -27,25 +27,26 @@ certificatesResolvers:
 
 http:
   routers:
-    web-secure-router:
-      rule: 'Host(`example.com`) || Host(`www.example.com`)'
+    django:
+      rule: "Host(`api.omgenes.click`)"
       entryPoints:
         - web-secure
       middlewares:
         - csrf
       service: django
       tls:
-        # https://doc.traefik.io/traefik/routing/routers/#certresolver
+        # https://docs.traefik.io/master/routing/routers/#certresolver
         certResolver: letsencrypt
 
-    web-media-router:
-      rule: '(Host(`example.com`) || Host(`www.example.com`)) && PathPrefix(`/media/`)'
+    frontend:
+      rule: "Host(`omgenes.click`) || Host(`www.omgenes.click`)"
       entryPoints:
         - web-secure
       middlewares:
         - csrf
-      service: django-media
+      service: frontend
       tls:
+        # https://docs.traefik.io/master/routing/routers/#certresolver
         certResolver: letsencrypt
 
   middlewares:
@@ -65,6 +66,11 @@ http:
       loadBalancer:
         servers:
           - url: http://nginx:80
+
+    frontend:
+      loadBalancer:
+        servers:
+          - url: http://frontend:80
 
 providers:
   # https://doc.traefik.io/traefik/master/providers/file/

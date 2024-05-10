@@ -69,6 +69,7 @@ DJANGO_APPS = [
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
+    "gauth"
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -291,6 +292,12 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8080',
+    'http://localhost:81',
+    'http://omgenes.click',
+]
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 CORS_URLS_REGEX = r"^/api/.*$"
