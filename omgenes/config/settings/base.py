@@ -211,9 +211,9 @@ FIXTURE_DIRS = (str(APPS_DIR / "fixtures"),)
 # SECURITY
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
-SESSION_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
-CSRF_COOKIE_HTTPONLY = True
+# CSRF_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
 X_FRAME_OPTIONS = "DENY"
 
@@ -293,14 +293,11 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:8080',
-    'http://localhost:81',
-    'http://omgenes.click',
-]
+
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
-CORS_URLS_REGEX = r"^/api/.*$"
+CORS_URLS_REGEX = r".*$"
+CORS_ALLOW_HEADERS = "*"
 
 # By Default swagger ui is available only to admin user(s). You can change permission classes to change that
 # See more configuration options at https://drf-spectacular.readthedocs.io/en/latest/settings.html#settings
@@ -313,3 +310,26 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+GOOGLE_CLIENT_ID='129850221361-koj4k3re7jjhr33i42ok2f3pj5f28mu2.apps.googleusercontent.com'
+CORS_ORIGIN_WHITELIST = [
+    'https://localhost:8080',
+    'https://localhost:81',
+    'http://localhost:8080',
+    'http://localhost:81',
+    'https://omgenes.click',
+    'http://omgenes.click',
+]
+
+ALLOWED_HOSTS = [
+    'localhost'
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://localhost:8080',
+    'https://localhost:81',
+    'http://localhost:8080',
+    'http://localhost:81',
+    'https://omgenes.click',
+    'http://omgenes.click',
+]

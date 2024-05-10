@@ -24,8 +24,11 @@
 <script setup> 
   import { onMounted } from 'vue'
   import {loadScript} from "vue-plugin-load-script";
+  import googleAPI from "./api/auth"
   const callback = (response) => {
-    console.log("Handle the response", response)
+    console.log("Handle the response", response);
+    console.log(googleAPI.googleCallback(response));
+
   }
   onMounted(() => {
     console.log(`the component is now mounted.`)
