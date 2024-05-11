@@ -27,8 +27,10 @@
   import googleAPI from "./api/auth"
   const callback = (response) => {
     console.log("Handle the response", response);
-    console.log(googleAPI.googleCallback(response));
-
+    console.log("token", response.credential);
+    googleAPI.googleCallback(response.credential).then(response => {
+      console.log(response);
+    });
   }
   onMounted(() => {
     console.log(`the component is now mounted.`)

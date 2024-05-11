@@ -6,7 +6,7 @@ export default axios.create({
 	timeout: 5000,
 	headers: {
 		'Access-Control-Allow-Origin': '*',
-		'Content-Type': 'application/json',
+		"Content-Type": "application/x-www-form-urlencoded",
 		'X-CSRFToken': Cookies.get('csrftoken'),
 	}
 })
