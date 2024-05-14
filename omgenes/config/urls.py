@@ -19,7 +19,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 #         name="about",
 #     ),
 #     # Django Admin, use {% url 'admin:index' %}
-#     path(settings.ADMIN_URL, admin.site.urls),
+    
 #     # User management
 #     path("users/", include("omgenes.users.urls", namespace="users")),
 #     path("accounts/", include("allauth.urls")),
@@ -44,7 +44,8 @@ from rest_framework.authtoken.views import obtain_auth_token
 # ]
 
 urlpatterns = [
-    path("google/", include("gauth.urls"))
+    path("google/", include("gauth.urls")),
+    path(settings.ADMIN_URL, admin.site.urls),
 ]
 
 if settings.DEBUG:

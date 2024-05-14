@@ -22,4 +22,13 @@ const router = createRouter({
   routes
 })
 
+// router.beforeEach((to, from, next) => {
+//   const cookieValue = document.cookie.split("; ")
+//   .find(row => row.startsWith('authtoken='))
+
+//   if (cookieValue) {
+
+//   }
+// })
+
 export default router

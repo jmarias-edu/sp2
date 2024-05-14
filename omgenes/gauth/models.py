@@ -1,10 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
 
 # Create your models here.
-class gauthuser(models.Model):
+class gauthuser(AbstractUser):
     f_name = models.CharField(max_length=50)
     l_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=254)
-
-    def __str__(self):
-        return f"{self.f_name} {self.l_name}"
+    user_id = models.CharField(max_length=50)
+    password = None
