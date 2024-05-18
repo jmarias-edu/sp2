@@ -26,6 +26,8 @@
   import googleAPI from "./api/auth"
   import VueCookies from "vue-cookies"
   import { onMounted, mounted } from 'vue'
+  import { decodeCredential } from 'vue3-google-login'
+
   export default {
     data(){
       return {
@@ -44,7 +46,12 @@
       },
       callback(response) {
         console.log("Handle the response", response);
-        googleAPI.googleCallback(response.credential).then(response => {
+        // console.log(response.credential);
+        const userData = decodeCredential(response.credential);
+        console.log("Handle the user data", userData);
+        const userToken = response.credential
+        
+        googleAPI.googleCallback(userToken).then(response => {
           console.log(response);
           console.log("Token ".concat(response.data["token"]));
           VueCookies.set("authtoken", "Token ".concat(response.data["token"]), "1d");
@@ -57,9 +64,9 @@
     },
     mounted(){
       if(VueCookies.get("authtoken")){
-        this.user = {"email": "name"}
+        
         googleAPI.fetchUser().then(response => {
-          console.log(response);
+          this.user = {"email": response.data["email"]}
         })
       }
     }
