@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   # psycopg dependencies
   libpq-dev
 
+
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
 
@@ -33,10 +34,22 @@ ENV BUILD_ENV ${BUILD_ENVIRONMENT}
 
 WORKDIR ${APP_HOME}
 
+# conda installation
+RUN apt-get update && apt-get install --no-install-recommends -y wget
+
+ENV PATH $PATH:/opt/miniconda3/bin
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh \
+  && bash Miniconda3-py38_4.9.2-Linux-x86_64.sh -b -p ../opt/miniconda3 \
+  && rm Miniconda3-py38_4.9.2-Linux-x86_64.sh \
+  && conda config --set auto_activate_base false \
+  && conda --version
+
+SHELL ["/bin/bash", "--login", "-c"]
 
 # devcontainer dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  sudo git bash-completion nano ssh
+  sudo git bash-completion nano ssh wget
+
 
 # Create devcontainer user and add it to sudoers
 RUN groupadd --gid 1000 dev-user \
@@ -71,9 +84,8 @@ COPY ./compose/local/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
-
-
 # copy application code to WORKDIR
 COPY . ${APP_HOME}
 
 ENTRYPOINT ["/entrypoint"]
+
