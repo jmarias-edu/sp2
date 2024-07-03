@@ -4,7 +4,8 @@
       <v-toolbar-title class="font-weight-bold">OMGenes Navigation</v-toolbar-title>
       <v-divider></v-divider>
       <v-list-item to="/" link title="Home"></v-list-item>
-      <v-list-item to="/about" link title="About"></v-list-item>
+      <v-list-item to="/about" link title="Genome Browser"></v-list-item>
+      <v-list-item to="/newproj" link title="Create New Project"></v-list-item>
       <v-divider></v-divider>
       <div v-if="isEmpty(user)"></div>
       <div v-else>

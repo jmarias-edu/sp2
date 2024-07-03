@@ -5,7 +5,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue')
   },
   {
     path: '/about',
@@ -14,6 +14,14 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  },
+  {
+    path: '/newproj',
+    name: 'newproj',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/NewProjView.vue')
   }
 ]
 
@@ -25,9 +33,7 @@ const router = createRouter({
 // router.beforeEach((to, from, next) => {
 //   const cookieValue = document.cookie.split("; ")
 //   .find(row => row.startsWith('authtoken='))
-
 //   if (cookieValue) {
-
 //   }
 // })
 

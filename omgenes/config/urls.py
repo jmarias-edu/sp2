@@ -46,7 +46,9 @@ from rest_framework.authtoken.views import obtain_auth_token
 urlpatterns = [
     path("google/", include("gauth.urls")),
     path(settings.ADMIN_URL, admin.site.urls),
-]
+    path("files/", include("projects.urls")),
+    *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
