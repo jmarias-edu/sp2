@@ -21,7 +21,6 @@ COPY ./requirements .
 RUN pip wheel --wheel-dir /usr/src/app/wheels  \
   -r ${BUILD_ENVIRONMENT}.txt
 
-
 # Python 'run' stage
 FROM python as python-run-stage
 
@@ -32,8 +31,6 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV BUILD_ENV ${BUILD_ENVIRONMENT}
 
-WORKDIR ${APP_HOME}
-
 # conda installation
 RUN apt-get update && apt-get install --no-install-recommends -y wget
 
@@ -42,7 +39,13 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.
   && bash Miniconda3-py38_4.9.2-Linux-x86_64.sh -b -p ../opt/miniconda3 \
   && rm Miniconda3-py38_4.9.2-Linux-x86_64.sh \
   && conda config --set auto_activate_base false \
-  && conda --version
+  && conda --version \
+  && conda install anaconda-client -n base
+
+RUN conda create --name snakemake \
+  && conda install -n snakemake -c conda-forge -c bioconda snakemake
+
+WORKDIR ${APP_HOME}
 
 SHELL ["/bin/bash", "--login", "-c"]
 

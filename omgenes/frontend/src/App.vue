@@ -1,19 +1,28 @@
 <template>
     <v-app>
-    <v-navigation-drawer>
-      <v-list-item title="OMGenes"></v-list-item>
+    <v-navigation-drawer v-model="drawer">
+      <v-toolbar-title class="font-weight-bold">OMGenes Navigation</v-toolbar-title>
       <v-divider></v-divider>
-      <router-link to="/"><v-list-item title="Home"></v-list-item></router-link>
-      <router-link to="/about"><v-list-item link title="About"></v-list-item></router-link>
+      <v-list-item to="/" link title="Home"></v-list-item>
+      <v-list-item to="/about" link title="About"></v-list-item>
+      <v-divider></v-divider>
+      <div v-if="isEmpty(user)"></div>
+      <div v-else>
+        <v-toolbar-title class="font-weight-bold">Your Projects</v-toolbar-title>
+      </div>
     </v-navigation-drawer>
-    <v-app-bar :elevation="5">
+    <v-app-bar :elevation="1">
       <v-app-bar-title>OMGenes</v-app-bar-title>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
-        <GoogleLogin :callback="callback" v-if="isEmpty(user)"/>
-        <div v-else>
-          <a>Welcome {{user["email"]}}!</a>
-          <a @click="logout">Logout</a>
+      <template v-slot:prepend><v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon></template>
+      <template v-slot:append>
+        <div v-if="isEmpty(user)">
+          <GoogleLogin :callback="callback"/>
         </div>
+        <div v-else>
+          <a>Welcome {{user["fname"]}}! </a>
+          <v-app-bar-nav-icon icon @click="logout"><v-icon>mdi-logout</v-icon></v-app-bar-nav-icon>
+        </div>
+      </template>
     </v-app-bar>
     <v-main>
       <router-view/>
@@ -31,7 +40,8 @@
   export default {
     data(){
       return {
-        user: {}
+        user: {},
+        drawer: true
       }
     },
     methods: {
@@ -56,17 +66,20 @@
           console.log("Token ".concat(response.data["token"]));
           VueCookies.set("authtoken", "Token ".concat(response.data["token"]), "1d");
           console.log(VueCookies.get("csrftoken"))
-          const fetcheduser = {"email": response.data["email"]};
+          const fetcheduser = {"email": response.data["email"], "fname": response.data["fname"]};
           this.user = fetcheduser;
           this.$router.push({path: "/"})
         });
+      },
+      toggleDrawer() {
+        this.drawer = !this.drawer;
       }
     },
     mounted(){
       if(VueCookies.get("authtoken")){
         
         googleAPI.fetchUser().then(response => {
-          this.user = {"email": response.data["email"]}
+          this.user = {"email": response.data["email"], "fname":response.data["fname"]}
         })
       }
     }

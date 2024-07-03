@@ -15,6 +15,8 @@ from rest_framework.authentication import TokenAuthentication
 
 from django.contrib.auth import authenticate, login
 
+import subprocess
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -28,10 +30,13 @@ logger = logging.getLogger(__name__)
 @ensure_csrf_cookie
 def verify_google_token(request):
     try:
+        # logger.info(subprocess.Popen("conda run -n snakemake snakemake --version", shell=True, stdout=subprocess.PIPE).stdout.read())
+
         token = request.POST.get("id_token")
         idinfo = id_token.verify_oauth2_token(token, requests.Request(), settings.GOOGLE_CLIENT_ID, clock_skew_in_seconds=3)
         userid = idinfo['sub']
         logger.info(idinfo)
+
 
         user_fetch = gauthuser.objects.filter(user_id=userid)
         logger.info(user_fetch)
@@ -55,15 +60,16 @@ def verify_google_token(request):
 
         login(request, user, backend="rest_framework.authentication.TokenAuthentication")
 
-        return JsonResponse({"success": True, "user_id": userid, "f_name": fname, "l_name": lname, "email": email, "token": token.key})
+        return JsonResponse({"success": True, "user_id": userid, "fname": fname, "lname": lname, "email": email, "token": token.key})
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)})
 
 def get_user_data(request):
     authentication_classes = [TokenAuthentication]
     # token = request.COOKIES.get("authtoken").split("%")[1]
+
     token = request.POST.get("token").split(" ")[1]
     logger.info(token)
     user_id = Token.objects.get(key=token).user_id
     user = gauthuser.objects.filter(id = user_id)[0]
-    return JsonResponse({"success": True, "email": user.email})
+    return JsonResponse({"success": True, "email": user.email, "fname":user.f_name, "lname":user.l_name})

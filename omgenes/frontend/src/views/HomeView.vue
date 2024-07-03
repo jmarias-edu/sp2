@@ -1,6 +1,7 @@
 <template>
-  <div class="home">
-    <h1>Welcome to OMGenes!</h1>
+  <div>
+    <v-card title="Welcome to OMGenes!">
+    </v-card>
   </div>
 </template>
 
