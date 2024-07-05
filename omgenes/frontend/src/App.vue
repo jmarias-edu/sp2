@@ -5,11 +5,12 @@
       <v-divider></v-divider>
       <v-list-item to="/" link title="Home"></v-list-item>
       <v-list-item to="/about" link title="Genome Browser"></v-list-item>
-      <v-list-item to="/newproj" link title="Create New Project"></v-list-item>
+      
       <v-divider></v-divider>
       <div v-if="isEmpty(user)"></div>
       <div v-else>
         <v-toolbar-title class="font-weight-bold">Your Projects</v-toolbar-title>
+        <v-list-item to="/newproj" link title="Create New Project"></v-list-item>
       </div>
     </v-navigation-drawer>
     <v-app-bar :elevation="1">
