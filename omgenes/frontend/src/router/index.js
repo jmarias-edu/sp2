@@ -8,12 +8,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue')
   },
   {
-    path: '/about',
-    name: 'about',
+    path: '/genomebrowser',
+    name: 'genomebrowser',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/GenomeBrowser.vue')
   },
   {
     path: '/newproj',
@@ -22,6 +22,12 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/NewProjView.vue')
+  },
+  {
+    path: "/reads/:id",
+    name: "variantreads",
+    component: import('../views/ReadView.vue'),
+    props: true
   }
 ]
 
