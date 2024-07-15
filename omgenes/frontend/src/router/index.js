@@ -26,7 +26,7 @@ const routes = [
   {
     path: "/reads/:id",
     name: "variantreads",
-    component: import('../views/ReadView.vue'),
+    component: () => import('../views/ReadView.vue'),
     props: true
   }
 ]

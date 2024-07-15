@@ -12,12 +12,28 @@
         <div v-else>
           <v-toolbar-title class="font-weight-bold">Your Projects</v-toolbar-title>
           <v-list-item to="/newproj" link title="Create New Project"></v-list-item>
+
+
+          <v-list-item v-for="read in reads" 
+          :key="read.id" 
+          :to="{name: 'variantreads', params: {id: read.id}}"
+          link>
+            <v-list-item-content>
+              <v-list-item-title>{{ read.name }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          
+
+
         </div>
       </v-navigation-drawer>
 
       <v-app-bar :elevation="1">
         <v-app-bar-title>OMGenes</v-app-bar-title>
-        <template v-slot:prepend><v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon></template>
+        <template v-slot:prepend>
+          <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+          <!-- <v-btn @click="fetchReads">Test Fetch</v-btn> -->
+        </template>
         <template v-slot:append>
           <div v-if="isEmpty(user)">
             <GoogleLogin :callback="callback"/>
@@ -30,7 +46,7 @@
       </v-app-bar>
 
       <v-main>
-        <router-view/>
+        <router-view :key="$route.fullPath"/>
       </v-main>
 
   </v-app>
@@ -39,6 +55,7 @@
 
 <script>
   import googleAPI from "./api/auth"
+  import fileHandler from "@/api/file"
   import VueCookies from "vue-cookies"
   import { onMounted, mounted } from 'vue'
   import { decodeCredential } from 'vue3-google-login'
@@ -47,7 +64,8 @@
     data(){
       return {
         user: {},
-        drawer: true
+        drawer: true,
+        reads: []
       }
     },
     methods: {
@@ -56,6 +74,7 @@
       },
       logout(){
         this.user = {}
+        this.reads = []
         VueCookies.remove("authtoken");
         VueCookies.remove("csrftoken");
         this.$router.push({path: "/"})
@@ -79,13 +98,22 @@
       },
       toggleDrawer() {
         this.drawer = !this.drawer;
+      },
+      fetchReads(){
+        fileHandler.fetchReads().then(
+          response => {
+            console.log(response.data)
+            this.reads = response.data.reads
+          }
+        )
       }
+
     },
     mounted(){
       if(VueCookies.get("authtoken")){
-        
         googleAPI.fetchUser().then(response => {
           this.user = {"email": response.data["email"], "fname":response.data["fname"]}
+          this.fetchReads()
         })
       }
     }

@@ -13,7 +13,10 @@ make backlogs:
 	sudo docker logs -f omgenes_local_django
 
 make frontlogs:
-	sudo docker logs -f omegenes_frontend_image
+	sudo docker logs -f frontend
 
 make datalogs:
-	sudo docker logs -f omgenes_production_postgres
+	sudo docker logs -f omgenes_local_postgres
+
+make shell:
+	sudo docker compose -f local.yml run --rm django python manage.py dbshell
