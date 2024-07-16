@@ -1,18 +1,30 @@
 import os
 import sys
 
-if len(sys.arv) > 1 and sys.argv[1].endswith(".yaml"):
+# Allow specifying the config file as a command line argument
+if len(sys.argv) > 1 and sys.argv[1].endswith('.yaml'):
     configfile = sys.argv[1]
 else:
     configfile = "config/config.yaml"
 
 configfile: configfile
 
-include : "rules/qc.smk"
-include : "rules/alignment.smk"
-include : "rules/variant_calling.smk"
+include: "rules/qc.smk"
+include: "rules/alignment.smk"
+include: "rules/variant_calling.smk"
 
 rule all:
     input:
         expand("{output_dir}/variants/{sample}.vcf", sample=config["samples"], output_dir=config["output_dir"])
 
+# Pass input_dir and output_dir to rules as wildcards
+wildcard_constraints:
+    input_dir=".*",
+    output_dir=".*"
+
+# Functions to adjust paths based on input_dir and output_dir
+def adjust_input(path, wildcards):
+    return os.path.join(config["input_dir"], path)
+
+def adjust_output(path, wildcards):
+    return os.path.join(config["output_dir"], path)
