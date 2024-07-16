@@ -44,12 +44,24 @@ export default {
             var options =
               {
                 // genome: "sacCer3",
-                reference: {
+                genome: {
                   fastaURL: response.data.reads.genomeURL,
-                  indexed: false
+                  indexed: false,
+                  // indexURL: "http://localhost:8000/media/projects/user_1/16/genome.fa.fai"
                 },
                 tracks: [
+                    { 
+                      name: "Reference Genome",
+                      type: 'sequence',
+                      order: 0,
+                      displayMode: 'EXPANDED',
+                      visibilityWindow: 30000000,
+                      height: 500,
+                      color: '#3366cc',
+                      fontSize: 30
+                    },
                     {
+                        "name": "VCF File",
                         "type": "variant",
                         "format": "vcf",
                         "url": response.data.reads.variantURL

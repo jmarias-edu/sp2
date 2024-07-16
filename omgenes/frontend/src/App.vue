@@ -93,7 +93,8 @@
           console.log(VueCookies.get("csrftoken"))
           const fetcheduser = {"email": response.data["email"], "fname": response.data["fname"]};
           this.user = fetcheduser;
-          this.$router.push({path: "/"})
+          this.$router.push({path: "/"});
+          this.fetchReads();
         });
       },
       toggleDrawer() {

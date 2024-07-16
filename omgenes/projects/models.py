@@ -22,3 +22,10 @@ class UploadedProjectFile(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(gauthuser, on_delete=models.CASCADE)
     project = models.ForeignKey(VariantRead, on_delete=models.CASCADE)
+
+class VariantCallProject(models.Model):
+    name = models.CharField(max_length=50)
+    referenceGenomeURL = models.URLField(max_length=256, null=True, blank=True, default=None)
+    genomeURL = models.URLField(max_length=256, null=True, blank=True, default=None)
+    vcfURL = models.URLField(max_length=256, null=True, blank=True, default=None)
+    owner = models.ForeignKey(gauthuser, on_delete=models.CASCADE)

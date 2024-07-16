@@ -1,0 +1,18 @@
+import os
+import sys
+
+if len(sys.arv) > 1 and sys.argv[1].endswith(".yaml"):
+    configfile = sys.argv[1]
+else:
+    configfile = "config/config.yaml"
+
+configfile: configfile
+
+include : "rules/qc.smk"
+include : "rules/alignment.smk"
+include : "rules/variant_calling.smk"
+
+rule all:
+    input:
+        expand("{output_dir}/variants/{sample}.vcf", sample=config["samples"], output_dir=config["output_dir"])
+
