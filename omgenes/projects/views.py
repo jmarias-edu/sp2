@@ -11,11 +11,14 @@ from .models import VariantRead
 from .serializers import UploadedFileSerializer
 from .serializers import UploadedProjectFileSerializer
 from .serializers import VariantReadSerializer
+from .serializers import VariantCallProjectSerializer
 from django.http import JsonResponse
 from gauth.models import gauthuser
 
 import logging
 logger = logging.getLogger(__name__)
+
+# Upload File Test View
 
 @api_view(['POST'])
 def upload_file(request):
@@ -26,14 +29,7 @@ def upload_file(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-def upload_project_file(request):
-    if request.method == 'POST':
-        serializer = UploadedProjectFileSerializer(data=request.data, context={"ownerToken":request.POST.get("token").split(" ")[1], "projectID": request.POST.get("projid")})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# Variant Read Views
 
 @api_view(['POST'])
 def create_project(request):
@@ -94,3 +90,24 @@ def deleteRead(request):
         read = VariantRead.objects.filter(id=read_id)[0]
         read.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+# Variant Call Views
+
+@api_view(["POST"])
+def createVariantCall(request):
+    if request.method == "POST":
+        serializer = VariantCallProjectSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({"reads": serializer.data}, status=200)
+        return JsonResponse({"reads": serializer.error}, status=400)
+
+@api_view(['POST'])
+def upload_project_file(request):
+    if request.method == 'POST':
+        serializer = UploadedProjectFileSerializer(data=request.data, context={"ownerToken":request.POST.get("token").split(" ")[1], "projectID": request.POST.get("projid")})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

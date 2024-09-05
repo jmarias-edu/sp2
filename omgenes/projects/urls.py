@@ -16,5 +16,5 @@ urlpatterns = [
     path("deleteproject/", deleteRead, name='delete-project'),
 
     path('fetchreads/', fetchReads, name='fetch-reads'),
-    path('fetchread/', fetchRead, name='fetch-read')
+    path('fetchread/', fetchRead, name='fetch-read'),
 ]

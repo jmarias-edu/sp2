@@ -6,10 +6,15 @@ from gauth.models import gauthuser
 def fileDirectory(instance, filename):
     return "projects/user_{0}/{1}/{2}".format(instance.owner.id, instance.project.id, filename)
 
-# Create your models here.
+def fileDirectoryCalls(instance, filename):
+    return "varcalls/user_{0}/{1}/{2}".format(instance.owner.id, instance.project.id, filename)
+
+# File Test Upload
 class UploadedFile(models.Model):
     file = models.FileField(upload_to="uploads/")
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+# Variant Reads Classes
 
 class VariantRead(models.Model):
     name = models.CharField(max_length=50)
@@ -23,9 +28,30 @@ class UploadedProjectFile(models.Model):
     owner = models.ForeignKey(gauthuser, on_delete=models.CASCADE)
     project = models.ForeignKey(VariantRead, on_delete=models.CASCADE)
 
+
+# Variant Calling Classes
+
+class DirectoryPathField(models.CharField):
+    def __init__(self, *args, **kwargs):
+        kwargs['max_length'] = kwargs.get('max_length', 255)
+        super().__init__(*args, **kwargs)
+    
+    def clean(self, value, model_instance):
+        value = super().clean(value, model_instance)
+        if not os.path.isdir(value):
+            raise ValidationError(f"{value} is not a valid directory path")
+        return value
+
 class VariantCallProject(models.Model):
     name = models.CharField(max_length=50)
     referenceGenomeURL = models.URLField(max_length=256, null=True, blank=True, default=None)
     genomeURL = models.URLField(max_length=256, null=True, blank=True, default=None)
     vcfURL = models.URLField(max_length=256, null=True, blank=True, default=None)
+    folder = DirectoryPathField(max_length=100, null=True, blank=True, default=None)
     owner = models.ForeignKey(gauthuser, on_delete=models.CASCADE)
+
+class UploadedVariantCallProjectFile(models.Model):
+    file = models.FileField(upload_to=fileDirectoryCalls)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(gauthuser, on_delete=models.CASCADE)
+    project = models.ForeignKey(VariantCallProject, on_delete=models.CASCADE)

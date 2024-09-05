@@ -2,18 +2,23 @@ from rest_framework import serializers
 from .models import UploadedFile
 from .models import UploadedProjectFile
 from .models import VariantRead
+from .models import VariantCallProject
+from .models import UploadedVariantCallProjectFile
 from rest_framework.authtoken.models import Token
 from gauth.models import gauthuser
 
-
-
 import logging
 logger = logging.getLogger(__name__)
+
+# Test Serializers
 
 class UploadedFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UploadedFile
         fields = ("id", "file", "uploaded_at")
+
+
+# Variant Read Serializers
 
 class UploadedProjectFileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,7 +34,6 @@ class UploadedProjectFileSerializer(serializers.ModelSerializer):
         
         return super().create(validated_data)
 
-
 class VariantReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = VariantRead
@@ -40,3 +44,15 @@ class VariantReadSerializer(serializers.ModelSerializer):
         owner = gauthuser.objects.filter(id = user_id)[0]
         validated_data["owner"] = owner
         return super().create(validated_data)
+
+# Variant Call Serializers
+
+class VariantCallProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VariantCallProject
+        fields = ("id", "name", "genomeURL", "variantURL", "folder", "owner")
+    
+class VariantCallProjectFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UploadedVariantCallProjectFile
+        fields = ("id", "file", "uploaded_at", "owner", "project")
