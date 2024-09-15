@@ -31,6 +31,7 @@ def upload_file(request):
 
 # Variant Read Views
 
+# Create Project Function
 @api_view(['POST'])
 def create_project(request):
     if request.method == 'POST':
@@ -44,6 +45,7 @@ def create_project(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# Update Project links Function
 @api_view(['PATCH'])
 def updateProjectLinks(request):
     read = VariantRead.objects.filter(id=request.data["readID"])[0]
@@ -53,7 +55,7 @@ def updateProjectLinks(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-
+# Fetch project reads
 @api_view(['POST'])
 def fetchReads(request):
     if request.method == 'POST':
@@ -67,6 +69,7 @@ def fetchReads(request):
         serializer = VariantReadSerializer(reads, many=True)
         return JsonResponse({"reads": serializer.data}, status=200)
 
+# Fetch Project Details
 @api_view(['POST'])
 def fetchRead(request):
     if request.method == 'POST':
@@ -82,6 +85,7 @@ def fetchRead(request):
         logger.info(serializer.data)
         return JsonResponse({"reads": serializer.data}, status=200)
 
+# Delete Project Read
 @api_view(["POST"])
 def deleteRead(request):
     if request.method == "POST":
@@ -93,6 +97,7 @@ def deleteRead(request):
 
 # Variant Call Views
 
+# Create Variant Call project
 @api_view(["POST"])
 def createVariantCall(request):
     if request.method == "POST":
@@ -103,6 +108,7 @@ def createVariantCall(request):
             return JsonResponse({"reads": serializer.data}, status=200)
         return JsonResponse({"reads": serializer.error}, status=400)
 
+# Upload Variant Call File
 @api_view(['POST'])
 def upload_project_file(request):
     if request.method == 'POST':
@@ -111,3 +117,7 @@ def upload_project_file(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Update Project Links
+
+# Delete Variant Call

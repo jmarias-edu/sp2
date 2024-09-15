@@ -12,6 +12,7 @@
         <div v-else>
           <v-toolbar-title class="font-weight-bold">Your Projects</v-toolbar-title>
           <v-list-item to="/newproj" link title="Create New Project"></v-list-item>
+          <v-list-item to="/newcall" link title="Create New Call"></v-list-item>
 
 
           <v-list-item v-for="read in reads" 
@@ -94,7 +95,7 @@
           const fetcheduser = {"email": response.data["email"], "fname": response.data["fname"]};
           this.user = fetcheduser;
           this.$router.push({path: "/"});
-          this.fetchReads();
+          this.$forceUpdate();
         });
       },
       toggleDrawer() {

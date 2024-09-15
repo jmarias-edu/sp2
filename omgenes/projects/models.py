@@ -31,6 +31,7 @@ class UploadedProjectFile(models.Model):
 
 # Variant Calling Classes
 
+# Class for creating filepath
 class DirectoryPathField(models.CharField):
     def __init__(self, *args, **kwargs):
         kwargs['max_length'] = kwargs.get('max_length', 255)
@@ -42,6 +43,7 @@ class DirectoryPathField(models.CharField):
             raise ValidationError(f"{value} is not a valid directory path")
         return value
 
+# Class for files of Variant Call
 class VariantCallProject(models.Model):
     name = models.CharField(max_length=50)
     referenceGenomeURL = models.URLField(max_length=256, null=True, blank=True, default=None)
@@ -50,6 +52,7 @@ class VariantCallProject(models.Model):
     folder = DirectoryPathField(max_length=100, null=True, blank=True, default=None)
     owner = models.ForeignKey(gauthuser, on_delete=models.CASCADE)
 
+# Class for File Upload of Variant Call
 class UploadedVariantCallProjectFile(models.Model):
     file = models.FileField(upload_to=fileDirectoryCalls)
     uploaded_at = models.DateTimeField(auto_now_add=True)
