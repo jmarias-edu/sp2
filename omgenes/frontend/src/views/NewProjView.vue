@@ -65,6 +65,8 @@ export default {
                   fileHandler.updateReadsLinks(updateData).then(
                     response4 => {
                       console.log(response4);
+                      this.$router.push({path: "/"});
+                      this.$forceUpdate();
                     }
                   )
                 }

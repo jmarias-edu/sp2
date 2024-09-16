@@ -11,7 +11,7 @@
         <div v-if="isEmpty(user)"></div>
         <div v-else>
           <v-toolbar-title class="font-weight-bold">Your Projects</v-toolbar-title>
-          <v-list-item to="/newproj" link title="Create New Project"></v-list-item>
+          <v-list-item to="/newproj" link title="Create New Read"></v-list-item>
           <v-list-item to="/newcall" link title="Create New Call"></v-list-item>
 
 

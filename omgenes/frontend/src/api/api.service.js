@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 
 export default axios.create({
 	baseURL: "http://localhost:8080/",
-	timeout: 10000,
+	timeout: 50000,
 	headers: {
 		"X-CSRFToken": Cookies.get('csrftoken'),
 		"Content-Type": "application/x-www-form-urlencoded",
