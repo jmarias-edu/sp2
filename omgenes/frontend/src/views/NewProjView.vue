@@ -5,7 +5,7 @@
       <v-btn @click="upload">Upload</v-btn>
     </v-card> -->
 
-    <v-card title="">
+    <v-card title="Create New VCF Read" class="pa-4">
       <v-text-field label="Project Name" v-model="name"></v-text-field>
       <v-file-input v-model="genome" label="Genome File"></v-file-input>
       <v-file-input v-model="vcf" label="VCF File"></v-file-input>

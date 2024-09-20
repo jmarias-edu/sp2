@@ -1,10 +1,9 @@
 <template>
-  <div>
-    <v-card :title="`${this.name}`">
+  <div class="d-flex">
+    <v-card :title="`${this.name}`" class="pa-4 flex-grow-1">
+        <div id="igv-div"></div>
+        <v-btn @click="deleteRead" style="float: right;">Delete Project</v-btn>
     </v-card>
-    <v-btn @click="test">Test Values</v-btn>
-    <v-btn @click="deleteRead">Delete Project</v-btn>
-    <div id="igv-div"></div>
   </div>
 </template>
 
