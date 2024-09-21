@@ -12,6 +12,7 @@ from .serializers import UploadedFileSerializer
 from .serializers import UploadedProjectFileSerializer
 from .serializers import VariantReadSerializer
 from .serializers import VariantCallProjectSerializer
+from .serializers import VariantCallProjectFileSerializer
 from django.http import JsonResponse
 from gauth.models import gauthuser
 

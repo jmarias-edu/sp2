@@ -1,20 +1,18 @@
 <template>
     <v-app>
 
-      <v-navigation-drawer v-model="drawer">
-        <v-toolbar-title class="font-weight-bold">OMGenes Navigation</v-toolbar-title>
+      <v-navigation-drawer v-model="drawer" class="pa-4">
+        <v-toolbar-title class="font-weight-bold">OMGenes</v-toolbar-title>
         <v-divider></v-divider>
         <v-list-item to="/" link title="Home"></v-list-item>
-        <v-list-item to="/genomebrowser" link title="Genome Browser"></v-list-item>
+        <v-list-item to="/genomebrowser" link title="Sample VCF"></v-list-item>
         
         <v-divider></v-divider>
         <div v-if="isEmpty(user)"></div>
         <div v-else>
-          <v-toolbar-title class="font-weight-bold">Your Projects</v-toolbar-title>
+          <v-toolbar-title class="font-weight-bold">VCF Reads</v-toolbar-title>
           <v-list-item to="/newproj" link title="Create New Read"></v-list-item>
-          <v-list-item to="/newcall" link title="Create New Call"></v-list-item>
-
-
+          
           <v-list-item v-for="read in reads" 
           :key="read.id" 
           :to="{name: 'variantreads', params: {id: read.id}}"
@@ -23,6 +21,9 @@
               <v-list-item-title>{{ read.name }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <v-toolbar-title class="font-weight-bold">Variant Calls</v-toolbar-title>
+          <v-list-item to="/newcall" link title="Create New Call"></v-list-item>
           
 
 
@@ -30,7 +31,7 @@
       </v-navigation-drawer>
 
       <v-app-bar :elevation="1">
-        <v-app-bar-title>OMGenes</v-app-bar-title>
+        <!-- <v-app-bar-title>OMGenes</v-app-bar-title> -->
         <template v-slot:prepend>
           <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
           <!-- <v-btn @click="fetchReads">Test Fetch</v-btn> -->
@@ -47,9 +48,16 @@
       </v-app-bar>
 
       <v-main>
-        <router-view :key="$route.fullPath"/>
+        <router-view :key="$route.fullPath"/>      
+        
       </v-main>
 
+
+    <!--  -->
+    <v-overlay :close-on-click="false" :disabled="true" v-model="isLoading" absolute class="d-flex justify-center align-center flex-column loading-overlay" @click.stop>
+      <v-progress-circular indeterminate color="primary" :size="100" :width="10"></v-progress-circular>
+      <!-- <v-text>Loading...</v-text> -->
+    </v-overlay>
   </v-app>
 
 </template>
@@ -66,7 +74,9 @@
       return {
         user: {},
         drawer: true,
-        reads: []
+        reads: [],
+        calls: [],
+        isLoading: true,
       }
     },
     methods: {
@@ -81,6 +91,7 @@
         this.$router.push({path: "/"})
       },
       callback(response) {
+        this.startLoading();
         console.log("Handle the response", response);
         // console.log(response.credential);
         const userData = decodeCredential(response.credential);
@@ -95,7 +106,11 @@
           const fetcheduser = {"email": response.data["email"], "fname": response.data["fname"]};
           this.user = fetcheduser;
           this.$router.push({path: "/"});
+        }).then(response => {
+          this.fetchReads();
           this.$forceUpdate();
+        }).then(response => {
+          this.stopLoading();
         });
       },
       toggleDrawer() {
@@ -108,6 +123,12 @@
             this.reads = response.data.reads
           }
         )
+      },
+      startLoading(){
+        this.isLoading = true;
+      },
+      stopLoading(){
+        this.isLoading = false;
       }
 
     },
@@ -124,3 +145,13 @@
   
 
 </script>
+
+<style>
+  .v-app {
+    position: relative;
+  }
+  
+  .loading-overlay {
+    pointer-events: auto; /* Enable pointer events when loading */
+  }
+</style>

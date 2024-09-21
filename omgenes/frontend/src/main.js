@@ -16,6 +16,15 @@ import * as directives from 'vuetify/directives';
 const vuetify = createVuetify({
     components,
     directives,
+    deafultTheme: "light",
+    themes: {
+        light: {
+          primary: '#1976D2',
+          secondary: '#424242',
+          accent: '#82B1FF',
+          // You can add or override colors in the default theme
+        },
+    }
 });
 
 const app = createApp(App)
