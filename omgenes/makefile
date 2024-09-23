@@ -20,3 +20,8 @@ make datalogs:
 
 make shell:
 	sudo docker compose -f local.yml run --rm django python manage.py dbshell
+
+make start:
+	sudo systemctl start docker
+
+make startbackend: start rebuild backlogs

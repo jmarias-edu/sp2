@@ -54,7 +54,7 @@
 
 
     <!--  -->
-    <v-overlay :close-on-click="false" :disabled="true" v-model="isLoading" absolute class="d-flex justify-center align-center flex-column loading-overlay" @click.stop>
+    <v-overlay v-model="isLoading" class="d-flex justify-center align-center flex-column" persistent absolute>
       <v-progress-circular indeterminate color="primary" :size="100" :width="10"></v-progress-circular>
       <!-- <v-text>Loading...</v-text> -->
     </v-overlay>
@@ -76,7 +76,7 @@
         drawer: true,
         reads: [],
         calls: [],
-        isLoading: true,
+        isLoading: false,
       }
     },
     methods: {
@@ -84,11 +84,17 @@
         return Object.keys(obj).length === 0
       },
       logout(){
+        this.startLoading();
+        setTimeout(()=>{
+          console.log("Logging out");
+        }, 2000)
         this.user = {}
         this.reads = []
+        this.calls = []
         VueCookies.remove("authtoken");
         VueCookies.remove("csrftoken");
-        this.$router.push({path: "/"})
+        this.$router.push({path: "/"});
+        this.stopLoading();
       },
       callback(response) {
         this.startLoading();
@@ -107,11 +113,10 @@
           this.user = fetcheduser;
           this.$router.push({path: "/"});
         }).then(response => {
-          this.fetchReads();
           this.$forceUpdate();
-        }).then(response => {
+          this.$router.go(0);
           this.stopLoading();
-        });
+        })
       },
       toggleDrawer() {
         this.drawer = !this.drawer;
@@ -149,9 +154,5 @@
 <style>
   .v-app {
     position: relative;
-  }
-  
-  .loading-overlay {
-    pointer-events: auto; /* Enable pointer events when loading */
   }
 </style>

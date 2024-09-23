@@ -49,7 +49,6 @@ class VariantCallProject(models.Model):
     referenceGenomeURL = models.URLField(max_length=256, null=True, blank=True, default=None)
     genomeURL = models.URLField(max_length=256, null=True, blank=True, default=None)
     vcfURL = models.URLField(max_length=256, null=True, blank=True, default=None)
-    folder = DirectoryPathField(max_length=100, null=True, blank=True, default=None)
     owner = models.ForeignKey(gauthuser, on_delete=models.CASCADE)
 
 # Class for File Upload of Variant Call

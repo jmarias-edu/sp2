@@ -2,16 +2,17 @@
   <div>
 
     <v-card title="Create New Variant Call Job" class="pa-4">
-      <v-text-field label="Variant Call" v-model="name"></v-text-field>
-      <v-file-input v-model="ref" label="Reference Genome File"></v-file-input>
-      <v-file-input v-model="genome" label="Genome to Compare"></v-file-input>
-      <v-btn @click="createProject">Create</v-btn>
+      <v-text-field :rules="textRules" label="Variant Call" v-model="name" required></v-text-field>
+      <v-file-input :rules="fileRules" v-model="ref" label="Reference Genome File" required></v-file-input>
+      <v-file-input :rules="fileRules" v-model="genome" label="Genome to Compare" required></v-file-input>
+      <v-btn @click="createCall">Create</v-btn>
     </v-card>
 
   </div>
 </template>
 
 <script>
+import callHandler from "@/api/call"
 
 export default {
   name: "NewCallView",
@@ -19,11 +20,22 @@ export default {
     return {
       ref: null,
       genome: null,
-      name: ""
+      name: "",
+      textRules: [
+        v => !!v || 'Text input is required',
+      ],
+      fileRules: [
+        v => !!v || 'File input is required',
+      ],
     }
   },
-  methods(){
+  methods: {
+    createCall(){
+      callHandler.createCall()
+      .then((response)=>{
 
+      })
+    }
   }
 }
 
