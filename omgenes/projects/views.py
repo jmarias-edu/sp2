@@ -46,6 +46,15 @@ def create_project(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+def upload_project_file(request):
+    if request.method == 'POST':
+        serializer = UploadedProjectFileSerializer(data=request.data, context={"ownerToken":request.POST.get("token").split(" ")[1], "projectID": request.POST.get("projid")})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 # Update Project links Function
 @api_view(['PATCH'])
 def updateProjectLinks(request):
@@ -103,21 +112,20 @@ def deleteRead(request):
 def createVariantCall(request):
     if request.method == "POST":
         serializer = VariantCallProjectSerializer(data=request.data, context={"ownerToken": request.POST.get("token").split(" ")[1]})
-        
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse({"reads": serializer.data}, status=200)
-        return JsonResponse({"reads": serializer.error}, status=400)
-
-# Upload Variant Call File
-@api_view(['POST'])
-def upload_project_file(request):
-    if request.method == 'POST':
-        serializer = UploadedProjectFileSerializer(data=request.data, context={"ownerToken":request.POST.get("token").split(" ")[1], "callID": request.POST.get("callid")})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Upload Variant Call File
+@api_view(["POST"])
+def uploadCallFile(request):
+    if request.method == "POST":
+        serializer = VariantCallFileProjectSerializer(data=request.data, context={"ownerToken": request.POST.get("token").split(" ")[1], , "callID": request.POST.get("callid")})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Update Project Links
 

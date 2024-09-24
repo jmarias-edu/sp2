@@ -2,10 +2,12 @@
   <div>
 
     <v-card title="Create New Variant Call Job" class="pa-4">
-      <v-text-field :rules="textRules" label="Variant Call" v-model="name" required></v-text-field>
-      <v-file-input :rules="fileRules" v-model="ref" label="Reference Genome File" required></v-file-input>
-      <v-file-input :rules="fileRules" v-model="genome" label="Genome to Compare" required></v-file-input>
-      <v-btn @click="createCall">Create</v-btn>
+      <v-form ref="form" v-model="valid">
+        <v-text-field :rules="textRules" label="Variant Call" v-model="name" required></v-text-field>
+        <v-file-input :rules="fileRules" accept=".fa,.fasta,.fastq" v-model="ref" label="Reference Genome File" required></v-file-input>
+        <v-file-input :rules="fileRules" accept=".fa,.fasta,.fastq" v-model="genome" label="Genome to Compare" required></v-file-input>
+        <v-btn @click="createCall">Create</v-btn>
+      </v-form>
     </v-card>
 
   </div>
@@ -13,6 +15,7 @@
 
 <script>
 import callHandler from "@/api/call"
+import Cookies from 'js-cookie'
 
 export default {
   name: "NewCallView",
@@ -25,15 +28,43 @@ export default {
         v => !!v || 'Text input is required',
       ],
       fileRules: [
-        v => !!v || 'File input is required',
+        v => !!v || 'File is required',
+        v => (v && v.length > 0) || 'File is required',
       ],
+      valid: false,
     }
   },
   methods: {
     createCall(){
-      callHandler.createCall()
-      .then((response)=>{
+      this.$refs.form.validate();
+      if (!this.valid) {
+        alert('Please fill in all required fields.');
+        return; // Exit if the form is invalid
+      }
 
+      const callData = new FormData();
+      const refFile = new FormData();
+      const genomeFile = new FormData();
+      const updateData = new FormData();
+
+      callData.append("token", Cookies.get('authtoken'))
+      refFile.append("token", Cookies.get('authtoken'))
+      genomeFile.append("token", Cookies.get('authtoken'))
+
+      callHandler.createCall(callData)
+      .then((response1)=>{
+        refFile.append("callid", response1.data.id);
+        genomeFile.append("callid", response1.data.id);
+
+        callHandler.uploadCallFile(refFile)
+        .then((response2)=>{
+          callHandler.uploadCallFile(genomeFile)
+          .then((response3)=>{
+            updateData.append("genome", "http://localhost:8000" + response2.data.file)
+            updateData.append("vcf", "http://localhost:8000" + response3.data.file)
+            updateData.append("callid", response1.data.id)
+          })
+        })
       })
     }
   }

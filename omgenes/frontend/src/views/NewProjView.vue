@@ -6,10 +6,12 @@
     </v-card> -->
 
     <v-card title="Create New VCF Read" class="pa-4">
-      <v-text-field :rules="textRules" label="Project Name" v-model="name" required></v-text-field >
-      <v-file-input :rules="fileRules" v-model="genome" label="Genome File" required></v-file-input>
-      <v-file-input :rules="fileRules" v-model="vcf" label="VCF File" required></v-file-input>
-      <v-btn @click="createProject">Create</v-btn>
+      <v-form ref="form" v-model="valid">
+        <v-text-field :rules="textRules" label="Project Name" v-model="name" required></v-text-field >
+        <v-file-input :rules="fileRules" accept=".fa,.fasta,.fastq" v-model="genome" label="Genome File" required></v-file-input>
+        <v-file-input :rules="fileRules" accept=".vcf" v-model="vcf" label="VCF File" required></v-file-input>
+        <v-btn @click="createProject">Create</v-btn>
+      </v-form>
     </v-card>
 
   </div>
@@ -19,6 +21,7 @@
 
 import fileHandler from "@/api/file"
 import Cookies from 'js-cookie'
+// import { ref } from "vue"
 
 export default {
   name: 'NewProjView',
@@ -32,17 +35,23 @@ export default {
         v => !!v || 'Text input is required',
       ],
       fileRules: [
-        v => !!v || 'File input is required',
+        v => !!v || 'File is required',
+        v => (v && v.length > 0) || 'File is required',
       ],
+      valid: false,
     }
   },
   methods: {
+    onFileChange(){
 
+    },
     createProject(){
-      // if (!this.$refs.form.validate()) {
-      //   alert('Please fill in all required fields.');
-      //   return; // Exit if the form is invalid
-      // }
+      // alert("Test")
+      this.$refs.form.validate();
+      if (!this.valid) {
+        alert('Please fill in all required fields.');
+        return;
+      }
 
       const genomeFile = new FormData();
       const vcfFile = new FormData();
@@ -56,33 +65,30 @@ export default {
       formData.append("token", Cookies.get('authtoken'))
       genomeFile.append("token", Cookies.get('authtoken'))
       vcfFile.append("token", Cookies.get('authtoken'))
-      fileHandler.createReads(formData)
-      .then(
+
+      fileHandler.createReads(formData).then(
         response1 => {
           console.log(response1.data)
           genomeFile.append("projid", response1.data.id);
           vcfFile.append("projid", response1.data.id);
 
-          fileHandler.uploadProjectFile(genomeFile)
-      .then(
-          response2 => {
-            console.log(response2)
-            fileHandler.uploadProjectFile(vcfFile)
-      .then(
-          response3 => {
-            console.log(response3)
-            updateData.append("genome", "http://localhost:8000" + response2.data.file)
-            updateData.append("vcf", "http://localhost:8000" + response3.data.file)
-            updateData.append("readID", response1.data.id)
-
-            fileHandler.updateReadsLinks(updateData).then(
-              response4 => {
-                console.log(response4);
-                this.$router.push({path: "/"});
-                this.$forceUpdate();
-              }
-            )
-          }
+          fileHandler.uploadProjectFile(genomeFile).then(
+            response2 => {
+              // console.log(response2)
+              fileHandler.uploadProjectFile(vcfFile).then(
+                response3 => {
+                  // console.log(response3)
+                  updateData.append("genome", "http://localhost:8000" + response2.data.file)
+                  updateData.append("vcf", "http://localhost:8000" + response3.data.file)
+                  updateData.append("readID", response1.data.id)
+                  fileHandler.updateReadsLinks(updateData).then(
+                    response4 => {
+                      console.log(response4);
+                      this.$router.push({path: "/"});
+                      this.$forceUpdate();
+                    }
+                  )
+                }
               )
             }
           )
