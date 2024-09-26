@@ -3,6 +3,7 @@
     <v-card :title="`${this.name}`" class="pa-4 flex-grow-1">
         <div id="igv-div"></div>
         <v-btn @click="deleteRead" style="float: right;">Delete Project</v-btn>
+        <v-btn @click="test" style="float: right;">Test</v-btn>
     </v-card>
   </div>
 </template>
@@ -14,6 +15,7 @@ import { onMounted, mounted, updated, beforeRouteUpdate, created, beforeUpdate }
 import {loadScript} from "vue-plugin-load-script";
 
 export default {
+  // inject: ["removeID"],
   data() {
     return {
       genome: "",
@@ -23,13 +25,16 @@ export default {
     }
   },
   name: 'ReadView',
-  props: ["id"],
+  props: {
+    id: Number
+  },
   methods:{
     test(){
       console.log(this.id)
       console.log(this.genome)
       console.log(this.vcf)
       console.log(this.name)
+      console.log(this.removeID)
     },
     fetchRead(){
       fileHandler.fetchRead(this.id).then(
@@ -77,8 +82,10 @@ export default {
       )
     },
     deleteRead(){
-      fileHandler.deleteRead(this.id)
-      this.$router.push({path: "/"})
+      // this.removeID(this.id);
+      fileHandler.deleteRead(this.id);
+      this.$router.push({path: "/"});
+      this.$router.go(0);
     }
   },
   created(){

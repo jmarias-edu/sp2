@@ -121,7 +121,7 @@ def createVariantCall(request):
 @api_view(["POST"])
 def uploadCallFile(request):
     if request.method == "POST":
-        serializer = VariantCallFileProjectSerializer(data=request.data, context={"ownerToken": request.POST.get("token").split(" ")[1], , "callID": request.POST.get("callid")})
+        serializer = VariantCallFileProjectSerializer(data=request.data, context={"ownerToken": request.POST.get("token").split(" ")[1], "callID": request.POST.get("callid")})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

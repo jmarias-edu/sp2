@@ -134,14 +134,24 @@
       },
       stopLoading(){
         this.isLoading = false;
-      }
+      },
+      // removeRead(readID){
+      //   this.reads = this.reads.filter(obj => obj.id !==readID);
+      //   console.log(this.reads)
+      //   this.$forceUpdate();
+      // },
 
     },
+    // provide(){
+    //   return {
+    //     removeID: this.removeRead
+    //   }
+    // },
     mounted(){
       if(VueCookies.get("authtoken")){
         googleAPI.fetchUser().then(response => {
-          this.user = {"email": response.data["email"], "fname":response.data["fname"]}
-          this.fetchReads()
+          this.user = {"email": response.data["email"], "fname":response.data["fname"]};
+          this.fetchReads();
         })
       }
     }

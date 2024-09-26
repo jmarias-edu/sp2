@@ -25,3 +25,6 @@ make start:
 	sudo systemctl start docker
 
 make startbackend: start rebuild backlogs
+
+make prune:
+	sudo docker system prune
