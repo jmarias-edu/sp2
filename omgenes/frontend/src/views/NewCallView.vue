@@ -47,7 +47,9 @@ export default {
       const genomeFile = new FormData();
       const updateData = new FormData();
 
-      callData.append("token", Cookies.get('authtoken'))
+      callData.append("token", Cookies.get('authtoken'));
+      callData.append("name", this.name);
+
       refFile.append("token", Cookies.get('authtoken'))
       genomeFile.append("token", Cookies.get('authtoken'))
 
@@ -56,13 +58,23 @@ export default {
         refFile.append("callid", response1.data.id);
         genomeFile.append("callid", response1.data.id);
 
+        refFile.append("file", this.ref);
+        genomeFile.append("file", this.genome);
+
         callHandler.uploadCallFile(refFile)
         .then((response2)=>{
           callHandler.uploadCallFile(genomeFile)
           .then((response3)=>{
             updateData.append("genome", "http://localhost:8000" + response2.data.file)
-            updateData.append("vcf", "http://localhost:8000" + response3.data.file)
+            updateData.append("ref", "http://localhost:8000" + response3.data.file)
             updateData.append("callid", response1.data.id)
+            callHandler.updateCallFile(updateData).then(
+              response4 => {
+                console.log(response4);
+                this.$router.push({path: "/"});
+                this.$forceUpdate();
+              }
+            )
           })
         })
       })

@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from .models import UploadedFile
 from .models import VariantRead
+from .models import VariantCallProject
 from .serializers import UploadedFileSerializer
 from .serializers import UploadedProjectFileSerializer
 from .serializers import VariantReadSerializer
@@ -115,18 +116,63 @@ def createVariantCall(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Upload Variant Call File
 @api_view(["POST"])
 def uploadCallFile(request):
     if request.method == "POST":
-        serializer = VariantCallFileProjectSerializer(data=request.data, context={"ownerToken": request.POST.get("token").split(" ")[1], "callID": request.POST.get("callid")})
+        serializer = VariantCallProjectFileSerializer(data=request.data, context={"ownerToken": request.POST.get("token").split(" ")[1], "callID": request.POST.get("callid")})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Update Project Links
+@api_view(['PATCH'])
+def updateCallLinks(request):
+    read = VariantCallProject.objects.filter(id=request.data["callid"])[0]
+    serializer = VariantCallProjectSerializer(read, data={"genomeURL":request.data["genome"], "referenceGenomeURL": request.data["ref"]}, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Fetch Variant Calls
+@api_view(['POST'])
+def fetchCalls(request):
+    if request.method == 'POST':
+        token = request.POST.get("token").split(" ")[1]
+        user_id = Token.objects.get(key=token).user_id
+
+        owner = gauthuser.objects.filter(id = user_id)[0]
+        reads = VariantCallProject.objects.filter(owner=owner)
+        serializer = VariantCallProjectSerializer(reads, many=True)
+        return JsonResponse({"calls": serializer.data}, status=200)
+
+# Fetch Call Details
+@api_view(['POST'])
+def fetchCall(request):
+    if request.method == 'POST':
+        token = request.POST.get("token").split(" ")[1]
+        call_id = request.POST.get("callid")
+
+        user_id = Token.objects.get(key=token).user_id
+        owner = gauthuser.objects.filter(id = user_id)[0]
+
+        reads = VariantCallProject.objects.filter(owner=owner, id=call_id)[0]
+        
+        serializer = VariantCallProjectSerializer(reads)
+        return JsonResponse({"calls": serializer.data}, status=200)
 
 # Delete Variant Call
+@api_view(["POST"])
+def deleteCall(request):
+    if request.method == "POST":
+        logger.info(request.POST.get("callid"))
+        read_id = request.POST.get("callid")
+        read = VariantCallProject.objects.filter(id=read_id)[0]
+        read.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+# Run Variant Calls

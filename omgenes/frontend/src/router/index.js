@@ -36,6 +36,12 @@ const routes = [
     name: "variantreads",
     component: () => import('../views/ReadView.vue'),
     props: true
+  },
+  {
+    path: "/calls/:id",
+    name: "variantcalls",
+    component: () => import('../views/CallView.vue'),
+    props: true
   }
 ]
 

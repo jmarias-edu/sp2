@@ -24,6 +24,15 @@
 
           <v-toolbar-title class="font-weight-bold">Variant Calls</v-toolbar-title>
           <v-list-item to="/newcall" link title="Create New Call"></v-list-item>
+
+          <v-list-item v-for="call in calls" 
+          :key="call.id" 
+          :to="{name: 'variantcalls', params: {id: call.id}}"
+          link>
+            <v-list-item-content>
+              <v-list-item-title>{{ call.name }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           
 
 
@@ -65,6 +74,7 @@
 <script>
   import googleAPI from "./api/auth"
   import fileHandler from "@/api/file"
+  import callHandler from "@/api/call"
   import VueCookies from "vue-cookies"
   import { onMounted, mounted } from 'vue'
   import { decodeCredential } from 'vue3-google-login'
@@ -135,6 +145,14 @@
       stopLoading(){
         this.isLoading = false;
       },
+      fetchCalls(){
+        callHandler.fetchCalls().then(
+          response => {
+            console.log(response.data)
+            this.calls = response.data.calls
+          }
+        )
+      },
       // removeRead(readID){
       //   this.reads = this.reads.filter(obj => obj.id !==readID);
       //   console.log(this.reads)
@@ -152,6 +170,7 @@
         googleAPI.fetchUser().then(response => {
           this.user = {"email": response.data["email"], "fname":response.data["fname"]};
           this.fetchReads();
+          this.fetchCalls();
         })
       }
     }

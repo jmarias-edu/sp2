@@ -10,9 +10,21 @@ async function uploadCallFile(formData){
 }
 
 async function updateCallFile(formData){
-    return api.post("files/updatecalllinks/", formData)
+    return api.patch("files/updatecalllinks/", formData)
+}
+
+async function fetchCalls(){
+    return api.post("files/fetchcalls/", {token: Cookies.get('authtoken')})
+}
+
+async function fetchCall(id){
+    return api.post("files/fetchcall/", {token: Cookies.get('authtoken'), callid: id})
+}
+
+async function deleteCall(id){
+    return api.post("files/deletecall/", {token: Cookies.get('authtoken'), callid: id})
 }
 
 export default {
-    createCall, uploadCallFile, updateCallFile
+    createCall, uploadCallFile, updateCallFile, fetchCalls, fetchCall, deleteCall
 }

@@ -55,7 +55,7 @@ class VariantCallProjectFileSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user_id = Token.objects.get(key=self.context.get("ownerToken")).user_id
         owner = gauthuser.objects.filter(id = user_id)[0]
-        project = VariantRead.objects.filter(id = self.context.get("projectID"))[0]
+        project = VariantCallProject.objects.filter(id = self.context.get("callID"))[0]
         validated_data["owner"] = owner
         validated_data["project"] = project
 
