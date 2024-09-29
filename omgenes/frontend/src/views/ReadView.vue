@@ -83,9 +83,14 @@ export default {
     },
     deleteRead(){
       // this.removeID(this.id);
-      fileHandler.deleteRead(this.id);
-      this.$router.push({path: "/"});
-      this.$router.go(0);
+      fileHandler.deleteRead(this.id).then(
+        response=>{
+          this.$router.push({path: "/"}).then(
+            response =>{
+              this.$router.go(0);
+            }
+          )
+      })
     }
   },
   created(){

@@ -64,7 +64,7 @@ class VariantCallProjectFileSerializer(serializers.ModelSerializer):
 class VariantCallProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = VariantCallProject
-        fields = ("id", "name", "referenceGenomeURL", "genomeURL")
+        fields = ("id", "name", "referenceGenomeURL", "genomeURL", "vcfURL", "folder")
 
     def create(self, validated_data):
         user_id = Token.objects.get(key=self.context.get("ownerToken")).user_id

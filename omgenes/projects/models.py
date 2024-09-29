@@ -9,6 +9,9 @@ def fileDirectory(instance, filename):
 def fileDirectoryCalls(instance, filename):
     return "varcalls/user_{0}/{1}/{2}".format(instance.owner.id, instance.project.id, filename)
 
+def folderCalls(instance):
+    return "varcalls/user_{0}/{1}/".format(instance.owner.id, instance.id)
+
 # File Test Upload
 class UploadedFile(models.Model):
     file = models.FileField(upload_to="uploads/")
@@ -50,6 +53,12 @@ class VariantCallProject(models.Model):
     genomeURL = models.URLField(max_length=256, null=True, blank=True, default=None)
     vcfURL = models.URLField(max_length=256, null=True, blank=True, default=None)
     owner = models.ForeignKey(gauthuser, on_delete=models.CASCADE)
+    folder = models.CharField(max_length=256, default='', editable=False)
+
+    def save(self, *args, **kwargs):
+        # Set the directory path when saving the instance
+        self.folder = folderCalls(self)
+        super().save(*args, **kwargs)
 
 # Class for File Upload of Variant Call
 class UploadedVariantCallProjectFile(models.Model):

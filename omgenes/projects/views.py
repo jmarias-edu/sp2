@@ -1,5 +1,7 @@
 from django.shortcuts import render
-
+import json
+import os
+import subprocess
 
 # Create your views here.
 from rest_framework import status
@@ -16,6 +18,7 @@ from .serializers import VariantCallProjectSerializer
 from .serializers import VariantCallProjectFileSerializer
 from django.http import JsonResponse
 from gauth.models import gauthuser
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -163,6 +166,9 @@ def fetchCall(request):
         reads = VariantCallProject.objects.filter(owner=owner, id=call_id)[0]
         
         serializer = VariantCallProjectSerializer(reads)
+
+        logger.info(serializer.data)
+        
         return JsonResponse({"calls": serializer.data}, status=200)
 
 # Delete Variant Call
@@ -175,4 +181,54 @@ def deleteCall(request):
         read.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+def createConfigFile(variantCall):
+    config = {
+        "ref": variantCall.referenceGenomeURL # To cut link
+        "genome": variantCall.genomeURL
+    }
+
+    folderpath = os.path.join(variantCall.folder, f"config_{variantCall.id}.json")
+    
+    with open(config_path, 'w') as config_file:
+        json.dump(config, config_file)
+
+    variantCall.config_file = config_path
+    variantCall.save()
+
+    return config_path
+
+def runVariantCall(variantCall):
+        config_file = create_snakemake_config(variant_call)
+
+    snakemake_cmd = [
+        "conda", "run", "-n", "your_snakemake_env",  # Replace with your Snakemake environment name
+        "snakemake", "--snakefile", "/path/to/Snakefile",
+        "--cores", "1",  # Adjust cores as needed
+        "--configfile", config_file
+    ]
+
+    try:
+        # Run the variant call using Snakemake
+        result = subprocess.run(snakemake_cmd, check=True)
+        variant_call.status = "Completed"
+    except subprocess.CalledProcessError as e:
+        # Log error and mark the job as failed
+        variant_call.status = "Failed"
+        print(f"Error: {e}")
+    finally:
+        variant_call.save()
+
+    return variant_call.status
+
+def checkCall(request):
+    pass
+
 # Run Variant Calls
+@api_view(["POST"])
+def runCall(request):
+    pass
+
+# Test Variant Call
+@api_view(["POST"])
+def testCall(request):
+    pass

@@ -27,9 +27,14 @@ export default {
   },
   methods:{
     deleteCall(){
-      callHandler.deleteCall(this.id)
-      this.$router.push({path: "/"});
-      this.$router.go(0);
+      callHandler.deleteCall(this.id).then(
+        response =>{
+            this.$router.push({path: "/"}).then(
+              response=>{
+                this.$router.go(0);
+          })
+        }
+      )
     },
     fetchCall(){
         callHandler.fetchCall(this.id).then(

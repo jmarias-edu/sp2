@@ -72,7 +72,7 @@ export default {
               response4 => {
                 console.log(response4);
                 this.$router.push({path: "/"});
-                this.$forceUpdate();
+                this.$router.go(0);
               }
             )
           })
