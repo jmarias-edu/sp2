@@ -1,0 +1,41 @@
+host: jaremlappy
+Building DAG of jobs...
+Relative file path './data/genome.fa' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Relative file path './data/A.fastq' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+all                    1
+variant_calling        1
+total                  2
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Wed Oct  2 17:29:09 2024]
+localrule variant_calling:
+    input: ./data/genome.fa, ./data/A.fastq
+    output: variants.vcf
+    jobid: 1
+    reason: Missing output files: variants.vcf
+    resources: tmpdir=/tmp
+
+[Wed Oct  2 17:29:09 2024]
+Error in rule variant_calling:
+    jobid: 1
+    input: ./data/genome.fa, ./data/A.fastq
+    output: variants.vcf
+    shell:
+        
+        bwa mem ./data/genome.fa ./data/A.fastq > target.bam |         bcftools mpileup -Ou -f ./data/genome.fa target.bam |         bcftools call -mv -Ov -o variants.vcf
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-10-02T172909.470548.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

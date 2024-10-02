@@ -1,30 +1,30 @@
 SHELL := /bin/bash
 
-make rebuild:
+rebuild:
 	sudo docker compose -f local.yml up -d --build
 
-make makemigrations:
+makemigrations:
 	sudo docker compose -f local.yml run --rm django python manage.py makemigrations
 
-make migrate:
+migrate:
 	sudo docker compose -f local.yml run --rm django python manage.py migrate
 
-make backlogs:
+backlogs:
 	sudo docker logs -f omgenes_local_django
 
-make frontlogs:
+frontlogs:
 	sudo docker logs -f frontend
 
-make datalogs:
+datalogs:
 	sudo docker logs -f omgenes_local_postgres
 
-make shell:
+shell:
 	sudo docker compose -f local.yml run --rm django python manage.py dbshell
 
-make start:
+start:
 	sudo systemctl start docker
 
-make startbackend: start rebuild backlogs
+startbackend: start rebuild backlogs
 
-make prune:
+prune:
 	sudo docker system prune

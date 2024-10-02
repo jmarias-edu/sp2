@@ -1,0 +1,26 @@
+host: jaremlappy
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+variant_calling        1
+total                  1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Wed Oct  2 18:54:44 2024]
+localrule variant_calling:
+    input: data/genome.fa, sorted_reads/sorted.bam, sorted_reads/sorted.bam.bai
+    output: variants.vcf
+    jobid: 0
+    reason: Missing output files: variants.vcf
+    resources: tmpdir=/tmp
+
+[Wed Oct  2 18:54:45 2024]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: .snakemake/log/2024-10-02T185444.904190.snakemake.log

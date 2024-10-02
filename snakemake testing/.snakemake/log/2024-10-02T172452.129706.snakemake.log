@@ -1,0 +1,8 @@
+host: jaremlappy
+Building DAG of jobs...
+MissingInputException in rule align_reads in file /mnt/Files/Jarem/Academics/4th Year 2nd Sem 2023-2024/SP-Repository/sp2/sp2/snakemake testing/snakefile, line 5:
+Missing input files for rule align_reads:
+    output: target_aligned.bam
+    affected files:
+        /data/genome.fa
+        /data/A.fastq

@@ -1,0 +1,47 @@
+host: jaremlappy
+Building DAG of jobs...
+Relative file path './data/genome.fa' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Relative file path './align/target_aligned.bam' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Relative file path './data/genome.fa' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Relative file path './data/A.fastq' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Relative file path './align/target_aligned.bam' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+align_reads            1
+all                    1
+variant_calling        1
+total                  3
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Wed Oct  2 17:17:42 2024]
+localrule align_reads:
+    input: ./data/genome.fa, ./data/A.fastq
+    output: ./align/target_aligned.bam
+    jobid: 2
+    reason: Missing output files: ./align/target_aligned.bam
+    resources: tmpdir=/tmp
+
+[Wed Oct  2 17:17:42 2024]
+Error in rule align_reads:
+    jobid: 2
+    input: ./data/genome.fa, ./data/A.fastq
+    output: ./align/target_aligned.bam
+    shell:
+        
+        bwa mem ./data/genome.fa ./data/A.fastq > ./align/target_aligned.bam
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job align_reads since they might be corrupted:
+./align/target_aligned.bam
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-10-02T171742.806620.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

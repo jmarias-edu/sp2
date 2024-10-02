@@ -1,0 +1,8 @@
+host: jaremlappy
+Building DAG of jobs...
+MissingInputException in rule map in file /mnt/Files/Jarem/Academics/4th Year 2nd Sem 2023-2024/SP-Repository/sp2/sp2/snakemake testing/snakefile, line 5:
+Missing input files for rule map:
+    output: mapped_reads/mapped.bam
+    affected files:
+        /data/A.fastq
+        /data/genome.fa

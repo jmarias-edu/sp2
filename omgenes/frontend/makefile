@@ -1,2 +1,2 @@
-make frontend:
+frontend:
 	npm run serve

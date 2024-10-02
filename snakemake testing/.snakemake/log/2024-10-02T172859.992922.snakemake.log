@@ -1,0 +1,8 @@
+host: jaremlappy
+Building DAG of jobs...
+MissingInputException in rule variant_calling in file /mnt/Files/Jarem/Academics/4th Year 2nd Sem 2023-2024/SP-Repository/sp2/sp2/snakemake testing/snakefile, line 16:
+Missing input files for rule variant_calling:
+    output: variants.vcf
+    affected files:
+        /data/genome.fa
+        /data/A.fastq

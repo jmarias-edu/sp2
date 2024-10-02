@@ -183,7 +183,7 @@ def deleteCall(request):
 
 def createConfigFile(variantCall):
     config = {
-        "ref": variantCall.referenceGenomeURL # To cut link
+        "ref": variantCall.referenceGenomeURL, # To cut link
         "genome": variantCall.genomeURL
     }
 
@@ -198,7 +198,7 @@ def createConfigFile(variantCall):
     return config_path
 
 def runVariantCall(variantCall):
-        config_file = create_snakemake_config(variant_call)
+    config_file = create_snakemake_config(variant_call)
 
     snakemake_cmd = [
         "conda", "run", "-n", "your_snakemake_env",  # Replace with your Snakemake environment name

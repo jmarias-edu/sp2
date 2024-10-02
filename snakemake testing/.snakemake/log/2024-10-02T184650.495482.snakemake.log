@@ -1,0 +1,6 @@
+host: jaremlappy
+Building DAG of jobs...
+MissingInputException in rule all in file /mnt/Files/Jarem/Academics/4th Year 2nd Sem 2023-2024/SP-Repository/sp2/sp2/snakemake testing/snakefile, line 1:
+Missing input files for rule all:
+    affected files:
+        variant.vcf
