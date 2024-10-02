@@ -14,8 +14,8 @@
 
 rule map:
     input:
-        "data/genome.fa",
-        "data/A.fastq"
+        ref=config["ref"],
+        target=config["target"]
     output:
         "mapped_reads/mapped.bam"
     shell:
@@ -41,8 +41,8 @@ rule index:
 
 rule variant_calling:
     input:
-        # ref=config["ref"],  # Reference genome
-        ref="data/genome.fa",
+        ref=config["ref"],  # Reference genome
+        # ref="data/genome.fa",
         bam="sorted_reads/sorted.bam",
         bai="sorted_reads/sorted.bam.bai"
     output:
