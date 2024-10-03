@@ -1,6 +1,6 @@
 import subprocess
 
-def run_variant_calling(ref_genome, target_genome):
+def run_variant_calling(ref_genome, target_genome, folder):
     # conda run -n snakemake snakemake --config ref=./data/genome.fa target=./data/A.fastq --cores 1
     snakemake_cmd = [
         "conda", "run", "-n", "snakemake",
@@ -8,7 +8,11 @@ def run_variant_calling(ref_genome, target_genome):
         "--config", 
         f"ref={ref_genome}", 
         f"target={target_genome}",
-        "--cores", "1", "variants.vcf"
+        f"folder={folder}",
+        # "--latency-wait", "10",
+        # "-np", #dry run
+        "--force",
+        "--cores", "1", f"{folder}/variants.vcf"
     ]
 
     # snakemake_cmd = [
@@ -25,4 +29,6 @@ def run_variant_calling(ref_genome, target_genome):
         print(f"An error occurred: {e}")
 
 # Example usage
-run_variant_calling("data/genome.fa", "data/A.fastq")
+# run_variant_calling("data/genome.fa", "data/A.fastq", "/")
+# run_variant_calling("maintests/1/genome.fa", "maintests/1/A.fastq", "maintests/1")
+run_variant_calling("maintests/2/genome.fa", "maintests/2/C.fastq", "maintests/2")

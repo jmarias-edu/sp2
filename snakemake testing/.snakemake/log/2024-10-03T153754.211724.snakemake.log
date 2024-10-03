@@ -1,0 +1,39 @@
+host: jaremlappy
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+index                  1
+map                    1
+refIndex               1
+sort                   1
+variant_calling        1
+total                  5
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Oct  3 15:37:54 2024]
+localrule refIndex:
+    input: maintests/1/genome.fa
+    output: {input.ref}.amb, {input.ref}.ann, {input.ref}.bwt, {input.ref}.pac, {input.ref}.sa
+    jobid: 3
+    reason: Missing output files: {input.ref}.bwt, {input.ref}.sa, {input.ref}.pac, {input.ref}.ann, {input.ref}.amb
+    resources: tmpdir=/tmp
+
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule refIndex in file /mnt/Files/Jarem/Academics/4th Year 2nd Sem 2023-2024/SP-Repository/sp2/sp2/snakemake testing/snakefile, line 5:
+Job 3  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+{input.ref}.amb (missing locally, parent dir not present)
+{input.ref}.ann (missing locally, parent dir not present)
+{input.ref}.bwt (missing locally, parent dir not present)
+{input.ref}.pac (missing locally, parent dir not present)
+{input.ref}.sa (missing locally, parent dir not present)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-10-03T153754.211724.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

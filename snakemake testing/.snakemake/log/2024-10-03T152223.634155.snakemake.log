@@ -1,0 +1,7 @@
+host: jaremlappy
+Building DAG of jobs...
+MissingInputException in rule sort in file /mnt/Files/Jarem/Academics/4th Year 2nd Sem 2023-2024/SP-Repository/sp2/sp2/snakemake testing/snakefile, line 32:
+Missing input files for rule sort:
+    output: maintests/1/sorted_reads/sorted.bam
+    affected files:
+        maintests/1/mapped_reads/mapped.bam
