@@ -56,7 +56,7 @@ rule variant_calling:
         bam=f"{config["folder"]}/sorted_reads/sorted.bam",
         bai=f"{config["folder"]}/sorted_reads/sorted.bam.bai"
     output:
-        vcf=f"{config["folder"]}/variants.vcf"
+        vcf=f"{config["target"]}.vcf"
     shell:
         """
         bcftools mpileup -Ou -f {input.ref} {input.bam} | \

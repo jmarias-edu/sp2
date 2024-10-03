@@ -12,7 +12,7 @@ def run_variant_calling(ref_genome, target_genome, folder):
         # "--latency-wait", "10",
         # "-np", #dry run
         "--force",
-        "--cores", "1", f"{folder}/variants.vcf"
+        "--cores", "1", f"{target_genome}.vcf"
     ]
 
     # snakemake_cmd = [

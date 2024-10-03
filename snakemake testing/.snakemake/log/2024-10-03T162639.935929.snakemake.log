@@ -1,0 +1,26 @@
+host: jaremlappy
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+variant_calling        1
+total                  1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Oct  3 16:26:39 2024]
+localrule variant_calling:
+    input: maintests/2/genome.fa, maintests/2/sorted_reads/sorted.bam, maintests/2/sorted_reads/sorted.bam.bai
+    output: maintests/2/C.fastq.vcf
+    jobid: 0
+    reason: Forced execution
+    resources: tmpdir=/tmp
+
+[Thu Oct  3 16:26:40 2024]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: .snakemake/log/2024-10-03T162639.935929.snakemake.log
