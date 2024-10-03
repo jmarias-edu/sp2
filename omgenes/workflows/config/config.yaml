@@ -1,6 +1,0 @@
-samples:
-  - sample1.fastq
-  - sample2.fastq
-reference: "data/reference/reference_genome.fasta"
-input_dir: "data/samples"
-output_dir: "data/output"

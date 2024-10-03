@@ -1,30 +1,64 @@
-import os
-import sys
-
-# Allow specifying the config file as a command line argument
-if len(sys.argv) > 1 and sys.argv[1].endswith('.yaml'):
-    configfile = sys.argv[1]
-else:
-    configfile = "config/config.yaml"
-
-configfile: configfile
-
-include: "rules/qc.smk"
-include: "rules/alignment.smk"
-include: "rules/variant_calling.smk"
-
 rule all:
     input:
-        expand("{output_dir}/variants/{sample}.vcf", sample=config["samples"], output_dir=config["output_dir"])
+        vcf=f"{config["target"]}.vcf"
 
-# Pass input_dir and output_dir to rules as wildcards
-wildcard_constraints:
-    input_dir=".*",
-    output_dir=".*"
+rule refIndex:
+    input:
+        ref=config["ref"]
+    output:
+        "{ref}.amb",
+        "{ref}.ann",
+        "{ref}.bwt",
+        "{ref}.pac",
+        "{ref}.sa"
+    shell:
+        """
+            bwa index {input}
+        """
 
-# Functions to adjust paths based on input_dir and output_dir
-def adjust_input(path, wildcards):
-    return os.path.join(config["input_dir"], path)
+rule map:
+    input:
+        ref=config["ref"],
+        target=config["target"],
+        index=[ f"{config["ref"]}.amb",
+                f"{config["ref"]}.ann",
+                f"{config["ref"]}.bwt",
+                f"{config["ref"]}.pac",
+                f"{config["ref"]}.sa"
+        ]
+    output:
+        f"{config["folder"]}/mapped_reads/mapped.bam"
+    shell:
+        """
+        bwa mem {input.ref} {input.target} | samtools view -Sb - > {output}
+        """
 
-def adjust_output(path, wildcards):
-    return os.path.join(config["output_dir"], path)
+rule sort:
+    input:
+        f"{config["folder"]}/mapped_reads/mapped.bam"
+    output:
+        f"{config["folder"]}/sorted_reads/sorted.bam"
+    shell:
+        "samtools sort -T ./sorted_reads/target.sample "
+        "-O bam {input} > {output}"
+
+rule index:
+    input:
+        f"{config["folder"]}/sorted_reads/sorted.bam"
+    output:
+        f"{config["folder"]}/sorted_reads/sorted.bam.bai"
+    shell:
+        "samtools index {input}"
+
+rule variant_calling:
+    input:
+        ref=config["ref"],  # Reference genome
+        bam=f"{config["folder"]}/sorted_reads/sorted.bam",
+        bai=f"{config["folder"]}/sorted_reads/sorted.bam.bai"
+    output:
+        vcf=f"{config["target"]}.vcf"
+    shell:
+        """
+        bcftools mpileup -Ou -f {input.ref} {input.bam} | \
+        bcftools call -mv -Ov -o {output.vcf}
+        """
