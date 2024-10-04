@@ -43,7 +43,7 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.
   && conda install anaconda-client -n base
 
 RUN conda create --name snakemake \
-  && conda install -n snakemake -c conda-forge -c bioconda snakemake
+  && conda install -n snakemake -c conda-forge -c bioconda snakemake bcftools bwa samtools
 
 WORKDIR ${APP_HOME}
 

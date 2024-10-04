@@ -181,54 +181,67 @@ def deleteCall(request):
         read.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-def createConfigFile(variantCall):
-    config = {
-        "ref": variantCall.referenceGenomeURL, # To cut link
-        "genome": variantCall.genomeURL
-    }
-
-    folderpath = os.path.join(variantCall.folder, f"config_{variantCall.id}.json")
-    
-    with open(config_path, 'w') as config_file:
-        json.dump(config, config_file)
-
-    variantCall.config_file = config_path
-    variantCall.save()
-
-    return config_path
-
 def runVariantCall(variantCall):
-    config_file = create_snakemake_config(variant_call)
+
+    ref = "./omgenes" + variantCall.referenceGenomeURL
+    ref = ref.replace("http://localhost:8000", "")
+    target = "./omgenes" + variantCall.genomeURL
+    target = target.replace("http://localhost:8000", "")
+    folder = "./omgenes/media/" + variantCall.folder[:-1]
+
+    print(ref)
+    print(target)
+    print(folder)
 
     snakemake_cmd = [
-        "conda", "run", "-n", "your_snakemake_env",  # Replace with your Snakemake environment name
-        "snakemake", "--snakefile", "/path/to/Snakefile",
+        "conda", "run", "-n", "snakemake",  # Replace with your Snakemake environment name
+        "snakemake", 
+        "--snakefile", "./workflows/snakefile",
         "--cores", "1",  # Adjust cores as needed
-        "--configfile", config_file
+        "--config",
+        f"ref={ref}", 
+        f"target={target}",
+        f"folder={folder}",
+        "--force"
     ]
 
+    logger.info(f"Call Status: {variantCall}")
+    
+
+    #Add changing of the vcf kinemerlu uwu
     try:
         # Run the variant call using Snakemake
+        # ls = subprocess.run(["ls"], capture_output=True, text=True)
+        # print(ls)
         result = subprocess.run(snakemake_cmd, check=True)
-        variant_call.status = "Completed"
+        variantCall.status = "Completed"
+        vcfFile = target.replace("./omgenes/media/", "")
+        variantCall.vcfURL = f"http://localhost:8000/media/{vcfFile}.vcf"
     except subprocess.CalledProcessError as e:
         # Log error and mark the job as failed
-        variant_call.status = "Failed"
+        variantCall.status = "Failed"
         print(f"Error: {e}")
     finally:
-        variant_call.save()
+        variantCall.save()
 
-    return variant_call.status
+    return variantCall.status
 
+@api_view(["POST"])
 def checkCall(request):
     pass
 
 # Run Variant Calls
 @api_view(["POST"])
 def runCall(request):
-    pass
+    if request.method == 'POST':
+        token = request.POST.get("token").split(" ")[1]
+        call_id = request.POST.get("callid")
 
-# Test Variant Call
-@api_view(["POST"])
-def testCall(request):
-    pass
+        user_id = Token.objects.get(key=token).user_id
+        owner = gauthuser.objects.filter(id = user_id)[0]
+
+        call = VariantCallProject.objects.filter(owner=owner, id=call_id)[0]
+
+        runVariantCall(call)
+
+        return JsonResponse({"Test": True}, status=200)

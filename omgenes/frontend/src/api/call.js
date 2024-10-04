@@ -25,6 +25,10 @@ async function deleteCall(id){
     return api.post("files/deletecall/", {token: Cookies.get('authtoken'), callid: id})
 }
 
+async function runCall(id){
+    return api.post("files/runcall/", {token: Cookies.get('authtoken'), callid: id})
+}
+
 export default {
-    createCall, uploadCallFile, updateCallFile, fetchCalls, fetchCall, deleteCall
+    createCall, uploadCallFile, updateCallFile, fetchCalls, fetchCall, deleteCall, runCall
 }

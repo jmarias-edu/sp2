@@ -65,8 +65,8 @@ export default {
         .then((response2)=>{
           callHandler.uploadCallFile(genomeFile)
           .then((response3)=>{
-            updateData.append("genome", "http://localhost:8000" + response2.data.file)
-            updateData.append("ref", "http://localhost:8000" + response3.data.file)
+            updateData.append("genome", "http://localhost:8000" + response3.data.file)
+            updateData.append("ref", "http://localhost:8000" + response2.data.file)
             updateData.append("callid", response1.data.id)
             callHandler.updateCallFile(updateData).then(
               response4 => {

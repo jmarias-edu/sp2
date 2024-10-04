@@ -12,6 +12,7 @@ from .views import updateCallLinks
 from .views import fetchCalls
 from .views import fetchCall
 from .views import deleteCall
+from .views import runCall
 
 urlpatterns = [
     path('upload/', upload_file, name='upload-file'),
@@ -31,4 +32,5 @@ urlpatterns = [
     path('fetchcalls/', fetchCalls, name="fetch-calls"),
     path('fetchcall/', fetchCall, name="fetch-call"),
     path('deletecall/', deleteCall, name="delete-call"),
+    path('runcall/', runCall, name="run-call")
 ]

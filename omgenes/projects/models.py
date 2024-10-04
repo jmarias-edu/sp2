@@ -54,6 +54,7 @@ class VariantCallProject(models.Model):
     vcfURL = models.URLField(max_length=256, null=True, blank=True, default=None)
     owner = models.ForeignKey(gauthuser, on_delete=models.CASCADE)
     folder = models.CharField(max_length=256, default='', editable=False)
+    status = models.CharField(max_length=40, default="pending", null=True, blank=True)
 
     def save(self, *args, **kwargs):
         # Set the directory path when saving the instance
