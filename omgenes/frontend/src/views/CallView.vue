@@ -1,11 +1,15 @@
 <template>
-  <div class="d-flex">
-    <v-card :title="`${this.name}`" class="pa-4 flex-grow-1">
-        <a v-bind:href="this.ref">Reference Genome</a>
-        <a v-bind:href="this.genome">Target Genome</a>
-        <a v-if="this.vcf!=null" v-bind:href="this.vcf">VCF File</a>
+  <div>
+    <v-card :title="`${this.name}`" class="pa-4 w-100">
+        <p><a v-bind:href="this.ref">Reference Genome</a></p>
+        <p><a v-bind:href="this.genome">Target Genome</a></p>
+        <p><a v-if="this.vcf!=null" v-bind:href="this.vcf">VCF File</a></p>
         <v-btn @click="deleteCall" style="float: right;">Delete Call</v-btn>
         <v-btn @click="runCall" style="float: right;">Run Call</v-btn>
+    </v-card>
+
+    <v-card title="Genome Browser View" class="pa-4 w-100" v-if="this.vcf!=null">
+      <div id="igv-div"></div>
     </v-card>
   </div>
 </template>
@@ -49,11 +53,52 @@ export default {
                 this.ref = response.data.calls.referenceGenomeURL;
                 this.genome = response.data.calls.genomeURL;
                 this.vcf = response.data.calls.vcfURL;
+
+                if (this.vcf!=null){
+                  this.loadGenomeBrowser();
+                }
             }
         )
     },
     runCall(){
       callHandler.runCall(this.id)
+    },
+    loadGenomeBrowser(){
+      loadScript("https://cdn.jsdelivr.net/npm/igv@2.15.13/dist/igv.min.js").then(() => {
+            var igvDiv = document.getElementById("igv-div");
+            var options =
+              {
+                // genome: "sacCer3",
+                genome: {
+                  fastaURL: this.ref,
+                  indexed: false,
+                  // indexURL: "http://localhost:8000/media/projects/user_1/16/genome.fa.fai"
+                },
+                tracks: [
+                    { 
+                      name: "Reference Genome",
+                      type: 'sequence',
+                      order: 0,
+                      displayMode: 'EXPANDED',
+                      visibilityWindow: 30000000,
+                      height: 500,
+                      color: '#3366cc',
+                      fontSize: 30
+                    },
+                    {
+                        "name": "VCF File",
+                        "type": "variant",
+                        "format": "vcf",
+                        "url": this.vcf
+                    }
+                ]
+              };
+
+            igv.createBrowser(igvDiv, options)
+              .then(function (browser) {
+                  console.log("Created IGV browser");
+            })
+          })
     }
   },
   created(){
