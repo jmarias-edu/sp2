@@ -71,7 +71,7 @@ export default {
                 // genome: "sacCer3",
                 genome: {
                   fastaURL: this.ref,
-                  indexed: false,
+                  // indexed: false,
                   // indexURL: "http://localhost:8000/media/projects/user_1/16/genome.fa.fai"
                 },
                 tracks: [

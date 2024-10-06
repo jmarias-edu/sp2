@@ -2,6 +2,7 @@ rule all:
     input:
         vcf=f"{config["target"]}.vcf"
 
+
 rule refIndex:
     input:
         ref=config["ref"]
