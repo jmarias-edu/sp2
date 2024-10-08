@@ -31,4 +31,4 @@ def run_variant_calling(ref_genome, target_genome, folder):
 # Example usage
 # run_variant_calling("data/genome.fa", "data/A.fastq", "/")
 # run_variant_calling("maintests/1/genome.fa", "maintests/1/A.fastq", "maintests/1")
-run_variant_calling("maintests/2/genome.fa", "maintests/2/C.fastq", "maintests/2")
+run_variant_calling("maintests/3/ecoli_ref.fna", "maintests/3/P0AES4.fasta", "maintests/3")

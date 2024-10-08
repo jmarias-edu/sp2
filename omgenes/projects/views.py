@@ -62,52 +62,66 @@ def upload_project_file(request):
 # Update Project links Function
 @api_view(['PATCH'])
 def updateProjectLinks(request):
-    read = VariantRead.objects.filter(id=request.data["readID"])[0]
-    serializer = VariantReadSerializer(read, data={"genomeURL":request.data["genome"], "variantURL": request.data["vcf"]}, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+    try:
+        read = VariantRead.objects.filter(id=request.data["readID"])[0]
+        serializer = VariantReadSerializer(read, data={"genomeURL":request.data["genome"], "variantURL": request.data["vcf"]}, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
+
 # Fetch project reads
 @api_view(['POST'])
 def fetchReads(request):
     if request.method == 'POST':
-        token = request.POST.get("token").split(" ")[1]
+        try:
+            token = request.POST.get("token").split(" ")[1]
 
-        user_id = Token.objects.get(key=token).user_id
-        owner = gauthuser.objects.filter(id = user_id)[0]
+            user_id = Token.objects.get(key=token).user_id
+            owner = gauthuser.objects.filter(id = user_id)[0]
 
-        reads = VariantRead.objects.filter(owner=owner)
+            reads = VariantRead.objects.filter(owner=owner)
 
-        serializer = VariantReadSerializer(reads, many=True)
-        return JsonResponse({"reads": serializer.data}, status=200)
+            serializer = VariantReadSerializer(reads, many=True)
+            return JsonResponse({"reads": serializer.data}, status=200)
+
+        except Exception as e:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 # Fetch Project Details
 @api_view(['POST'])
 def fetchRead(request):
     if request.method == 'POST':
-        token = request.POST.get("token").split(" ")[1]
-        read_id = request.POST.get("readid")
+        try:
+            token = request.POST.get("token").split(" ")[1]
+            read_id = request.POST.get("readid")
 
-        user_id = Token.objects.get(key=token).user_id
-        owner = gauthuser.objects.filter(id = user_id)[0]
+            user_id = Token.objects.get(key=token).user_id
+            owner = gauthuser.objects.filter(id = user_id)[0]
 
-        reads = VariantRead.objects.filter(owner=owner, id=read_id)[0]
+            reads = VariantRead.objects.filter(owner=owner, id=read_id)[0]
 
-        serializer = VariantReadSerializer(reads)
-        logger.info(serializer.data)
-        return JsonResponse({"reads": serializer.data}, status=200)
+            serializer = VariantReadSerializer(reads)
+            # logger.info(serializer.data)
+            return JsonResponse({"reads": serializer.data}, status=200)
+        except:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 # Delete Project Read
 @api_view(["POST"])
 def deleteRead(request):
     if request.method == "POST":
-        logger.info(request.POST.get("readid"))
-        read_id = request.POST.get("readid")
-        read = VariantRead.objects.filter(id=read_id)[0]
-        read.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        try:
+            logger.info(request.POST.get("readid"))
+            read_id = request.POST.get("readid")
+            read = VariantRead.objects.filter(id=read_id)[0]
+            read.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 # Variant Call Views
 

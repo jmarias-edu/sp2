@@ -9,7 +9,6 @@
         <v-btn @click="createCall">Create</v-btn>
       </v-form>
     </v-card>
-
   </div>
 </template>
 
