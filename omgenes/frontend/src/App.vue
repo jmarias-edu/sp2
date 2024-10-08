@@ -1,10 +1,15 @@
 <template>
     <v-app>
-      <v-app-bar :elevation="1">
+      <v-app-bar :elevation="1" class="">
         <!-- <v-app-bar-title>OMGenes</v-app-bar-title> -->
         <template v-slot:prepend>
           <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
-          <!-- <v-btn @click="fetchReads">Test Fetch</v-btn> -->
+          <img src="/favicon.ico"/>
+          <v-toolbar-title class="font-weight-bold ma-1">OMGenes</v-toolbar-title>
+          <v-btn text to="/" class="ma-1">Home</v-btn>
+          <v-btn text to="/genomebrowser" class="ma-1">Sample VCF</v-btn>
+          <v-btn text to="/genomebrowser" class="ma-1">About</v-btn>
+          <v-btn text to="/genomebrowser" class="ma-1">Workflow</v-btn>
         </template>
         <template v-slot:append>
           <div v-if="isEmpty(user)">
@@ -18,8 +23,6 @@
       </v-app-bar>
       
       <v-navigation-drawer v-model="drawer" class="pa-4">
-        <v-toolbar-title class="font-weight-bold">OMGenes</v-toolbar-title>
-        <v-divider></v-divider>
         <v-list-item to="/" link title="Home"></v-list-item>
         <v-list-item to="/genomebrowser" link title="Sample VCF"></v-list-item>
         

@@ -22,9 +22,6 @@
           </v-card-title>
           <v-card-subtitle>Reference Genome</v-card-subtitle>
         </v-card>
-        <!-- <p><a v-bind:href="this.ref">Reference Genome</a></p>
-        <p><a v-bind:href="this.genome">Target Genome</a></p>
-        <p><a v-if="this.vcf!=null" v-bind:href="this.vcf">VCF File</a></p> -->
     </v-card>
 
     <v-card title="Genome Browser View" class="pa-4 w-100" v-if="this.vcf!=null">
