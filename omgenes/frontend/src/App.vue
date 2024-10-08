@@ -1,6 +1,22 @@
 <template>
     <v-app>
-
+      <v-app-bar :elevation="1">
+        <!-- <v-app-bar-title>OMGenes</v-app-bar-title> -->
+        <template v-slot:prepend>
+          <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+          <!-- <v-btn @click="fetchReads">Test Fetch</v-btn> -->
+        </template>
+        <template v-slot:append>
+          <div v-if="isEmpty(user)">
+            <GoogleLogin :callback="callback"/>
+          </div>
+          <div v-else>
+            <a>Welcome {{user["fname"]}}! </a>
+            <v-app-bar-nav-icon icon @click="logout"><v-icon>mdi-logout</v-icon></v-app-bar-nav-icon>
+          </div>
+        </template>
+      </v-app-bar>
+      
       <v-navigation-drawer v-model="drawer" class="pa-4">
         <v-toolbar-title class="font-weight-bold">OMGenes</v-toolbar-title>
         <v-divider></v-divider>
@@ -39,22 +55,7 @@
         </div>
       </v-navigation-drawer>
 
-      <v-app-bar :elevation="1">
-        <!-- <v-app-bar-title>OMGenes</v-app-bar-title> -->
-        <template v-slot:prepend>
-          <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
-          <!-- <v-btn @click="fetchReads">Test Fetch</v-btn> -->
-        </template>
-        <template v-slot:append>
-          <div v-if="isEmpty(user)">
-            <GoogleLogin :callback="callback"/>
-          </div>
-          <div v-else>
-            <a>Welcome {{user["fname"]}}! </a>
-            <v-app-bar-nav-icon icon @click="logout"><v-icon>mdi-logout</v-icon></v-app-bar-nav-icon>
-          </div>
-        </template>
-      </v-app-bar>
+      
 
       <v-main>
         <router-view :key="$route.fullPath"/>      

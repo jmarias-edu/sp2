@@ -106,7 +106,7 @@ def fetchRead(request):
             serializer = VariantReadSerializer(reads)
             # logger.info(serializer.data)
             return JsonResponse({"reads": serializer.data}, status=200)
-        except:
+        except Exception as e:
             return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -120,7 +120,7 @@ def deleteRead(request):
             read = VariantRead.objects.filter(id=read_id)[0]
             read.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except:
+        except Exception as e:
             return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 # Variant Call Views
@@ -148,52 +148,67 @@ def uploadCallFile(request):
 # Update Project Links
 @api_view(['PATCH'])
 def updateCallLinks(request):
-    read = VariantCallProject.objects.filter(id=request.data["callid"])[0]
-    serializer = VariantCallProjectSerializer(read, data={"genomeURL":request.data["genome"], "referenceGenomeURL": request.data["ref"]}, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        read = VariantCallProject.objects.filter(id=request.data["callid"])[0]
+        serializer = VariantCallProjectSerializer(read, data={"genomeURL":request.data["genome"], "referenceGenomeURL": request.data["ref"]}, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 # Fetch Variant Calls
 @api_view(['POST'])
 def fetchCalls(request):
     if request.method == 'POST':
-        token = request.POST.get("token").split(" ")[1]
-        user_id = Token.objects.get(key=token).user_id
+        try:
+            token = request.POST.get("token").split(" ")[1]
+            user_id = Token.objects.get(key=token).user_id
 
-        owner = gauthuser.objects.filter(id = user_id)[0]
-        reads = VariantCallProject.objects.filter(owner=owner)
-        serializer = VariantCallProjectSerializer(reads, many=True)
-        return JsonResponse({"calls": serializer.data}, status=200)
+            owner = gauthuser.objects.filter(id = user_id)[0]
+            reads = VariantCallProject.objects.filter(owner=owner)
+            serializer = VariantCallProjectSerializer(reads, many=True)
+            return JsonResponse({"calls": serializer.data}, status=200)
+        except Exception as e:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 # Fetch Call Details
 @api_view(['POST'])
 def fetchCall(request):
     if request.method == 'POST':
-        token = request.POST.get("token").split(" ")[1]
-        call_id = request.POST.get("callid")
+        try:
+            token = request.POST.get("token").split(" ")[1]
+            call_id = request.POST.get("callid")
 
-        user_id = Token.objects.get(key=token).user_id
-        owner = gauthuser.objects.filter(id = user_id)[0]
+            user_id = Token.objects.get(key=token).user_id
+            owner = gauthuser.objects.filter(id = user_id)[0]
 
-        reads = VariantCallProject.objects.filter(owner=owner, id=call_id)[0]
-        
-        serializer = VariantCallProjectSerializer(reads)
+            reads = VariantCallProject.objects.filter(owner=owner, id=call_id)[0]
+            
+            serializer = VariantCallProjectSerializer(reads)
 
-        logger.info(serializer.data)
-        
-        return JsonResponse({"calls": serializer.data}, status=200)
+            logger.info(serializer.data)
+            
+            return JsonResponse({"calls": serializer.data}, status=200)
+        except Exception as e:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 # Delete Variant Call
 @api_view(["POST"])
 def deleteCall(request):
     if request.method == "POST":
-        logger.info(request.POST.get("callid"))
-        read_id = request.POST.get("callid")
-        read = VariantCallProject.objects.filter(id=read_id)[0]
-        read.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        try:
+            logger.info(request.POST.get("callid"))
+            read_id = request.POST.get("callid")
+            read = VariantCallProject.objects.filter(id=read_id)[0]
+            read.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 def runVariantCall(variantCall):
 
@@ -240,22 +255,27 @@ def runVariantCall(variantCall):
 
     return variantCall.status
 
-@api_view(["POST"])
-def checkCall(request):
-    pass
-
 # Run Variant Calls
 @api_view(["POST"])
 def runCall(request):
     if request.method == 'POST':
-        token = request.POST.get("token").split(" ")[1]
-        call_id = request.POST.get("callid")
+        try:
+            token = request.POST.get("token").split(" ")[1]
+            call_id = request.POST.get("callid")
 
-        user_id = Token.objects.get(key=token).user_id
-        owner = gauthuser.objects.filter(id = user_id)[0]
+            user_id = Token.objects.get(key=token).user_id
+            owner = gauthuser.objects.filter(id = user_id)[0]
 
-        call = VariantCallProject.objects.filter(owner=owner, id=call_id)[0]
+            call = VariantCallProject.objects.filter(owner=owner, id=call_id)[0]
 
-        runVariantCall(call)
+            runVariantCall(call)
 
-        return JsonResponse({"Test": True}, status=200)
+            return JsonResponse({"Test": True}, status=200)
+            
+        except Exception as e:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def checkCall(request):
+    pass

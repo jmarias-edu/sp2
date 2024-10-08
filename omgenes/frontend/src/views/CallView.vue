@@ -1,15 +1,39 @@
 <template>
   <div>
-    <v-card :title="`${this.name}`" class="pa-4 w-100">
-        <p><a v-bind:href="this.ref">Reference Genome</a></p>
+    <v-card :title="`${this.name} Files`" class="pa-4 w-100">
+        <v-card class="ma-4">
+          <v-card-title>
+            {{ this.ref.split("/").pop() }}
+            <v-btn :href="this.ref" style="float: right;">Download</v-btn>
+            </v-card-title>
+          <v-card-subtitle>Reference Genome</v-card-subtitle>
+        </v-card>
+        <v-card class="ma-4">
+          <v-card-title>
+            {{ this.genome.split("/").pop() }}
+            <v-btn :href="this.genome" style="float: right;">Download</v-btn>
+          </v-card-title>
+          <v-card-subtitle>Target Genome</v-card-subtitle>
+        </v-card>
+        <v-card v-if="this.vcf!=null" class="ma-4">
+          <v-card-title>
+            {{ this.vcf.split("/").pop() }} 
+            <v-btn :href="this.vcf" style="float: right;">Download</v-btn>
+          </v-card-title>
+          <v-card-subtitle>Reference Genome</v-card-subtitle>
+        </v-card>
+        <!-- <p><a v-bind:href="this.ref">Reference Genome</a></p>
         <p><a v-bind:href="this.genome">Target Genome</a></p>
-        <p><a v-if="this.vcf!=null" v-bind:href="this.vcf">VCF File</a></p>
-        <v-btn @click="deleteCall" style="float: right;">Delete Call</v-btn>
-        <v-btn @click="runCall" style="float: right;">Run Call</v-btn>
+        <p><a v-if="this.vcf!=null" v-bind:href="this.vcf">VCF File</a></p> -->
     </v-card>
 
     <v-card title="Genome Browser View" class="pa-4 w-100" v-if="this.vcf!=null">
       <div id="igv-div"></div>
+    </v-card>
+
+    <v-card title="Variant Call Settings" class="pa-4 w-100" v-if="this.vcf!=null">
+      <v-btn @click="deleteCall" style="float: right;">Delete Call</v-btn>
+      <v-btn @click="runCall" style="float: right;">Run Call</v-btn>
     </v-card>
   </div>
 </template>
