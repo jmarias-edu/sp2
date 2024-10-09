@@ -4,8 +4,8 @@
         <!-- <v-app-bar-title>OMGenes</v-app-bar-title> -->
         <template v-slot:prepend>
           <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
-          <img src="/favicon.ico"/>
-          <v-toolbar-title class="font-weight-bold ma-1">OMGenes</v-toolbar-title>
+          <img src="/appbarlogo.png" style="height: 100%;"/>
+          <!-- <v-toolbar-title class="font-weight-bold ma-1">OMGenes</v-toolbar-title> -->
           <v-btn text to="/" class="ma-1">Home</v-btn>
           <v-btn text to="/genomebrowser" class="ma-1">Sample VCF</v-btn>
           <v-btn text to="/genomebrowser" class="ma-1">About</v-btn>
@@ -71,6 +71,14 @@
       <v-progress-circular indeterminate color="primary" :size="100" :width="10"></v-progress-circular>
       <!-- <v-text>Loading...</v-text> -->
     </v-overlay>
+
+    <v-snackbar v-model="snackbar.show" :color="snackbar.color" top right timeout="3000">
+      {{ snackbar.message }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar.show = false">Close</v-btn>
+      </template>
+    </v-snackbar>
+
   </v-app>
 
 </template>
@@ -91,6 +99,11 @@
         reads: [],
         calls: [],
         isLoading: false,
+        snackbar: {
+          show: false,
+          message: '',
+          color: 'info',
+        }
       }
     },
     methods: {
@@ -109,6 +122,7 @@
         VueCookies.remove("csrftoken");
         this.$router.push({path: "/"});
         this.stopLoading();
+        this.showToast("Successfully logged out!")
       },
       callback(response) {
         this.startLoading();
@@ -130,6 +144,7 @@
           this.$forceUpdate();
           this.$router.go(0);
           this.stopLoading();
+        }).then(response =>{
         })
       },
       toggleDrawer() {
@@ -157,6 +172,11 @@
           }
         )
       },
+      showToast(message, color = 'info') {
+        this.snackbar.message = message;
+        this.snackbar.color = color;
+        this.snackbar.show = true;
+      },
       // removeRead(readID){
       //   this.reads = this.reads.filter(obj => obj.id !==readID);
       //   console.log(this.reads)
@@ -175,6 +195,7 @@
           this.user = {"email": response.data["email"], "fname":response.data["fname"]};
           this.fetchReads();
           this.fetchCalls();
+          this.showToast("Data fetched!");
         })
       }
     }
