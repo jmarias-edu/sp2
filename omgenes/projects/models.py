@@ -52,6 +52,7 @@ class VariantCallProject(models.Model):
     referenceGenomeURL = models.URLField(max_length=256, null=True, blank=True, default=None)
     genomeURL = models.URLField(max_length=256, null=True, blank=True, default=None)
     vcfURL = models.URLField(max_length=256, null=True, blank=True, default=None)
+    log = models.URLField(max_length=256, null=True, blank=True, default=None)
     owner = models.ForeignKey(gauthuser, on_delete=models.CASCADE)
     folder = models.CharField(max_length=256, default='', editable=False)
     status = models.CharField(max_length=40, default="pending", null=True, blank=True)

@@ -28,7 +28,11 @@
       <div id="igv-div"></div>
     </v-card>
 
-    <v-card title="Variant Call Settings" class="pa-4 w-100" v-if="this.vcf!=null">
+    <v-card title="Variant Call Log" class="pa-4 w-100" v-if="this.vcf!=null">
+      <pre class="logfile-display">{{ this.log }}</pre>
+    </v-card>
+
+    <v-card title="Variant Call Settings" class="pa-4 w-100">
       <v-btn @click="deleteCall" style="float: right;">Delete Call</v-btn>
       <v-btn @click="runCall" style="float: right;">Run Call</v-btn>
     </v-card>
@@ -48,7 +52,9 @@ export default {
       ref: "",
       index: "",
       name: "",
-      vcf: ""
+      vcf: "",
+      logfile: "",
+      log: ""
     }
   },
   name: 'CallView',
@@ -74,9 +80,11 @@ export default {
                 this.ref = response.data.calls.referenceGenomeURL;
                 this.genome = response.data.calls.genomeURL;
                 this.vcf = response.data.calls.vcfURL;
+                this.logfile = response.data.calls.log;
 
                 if (this.vcf!=null){
                   this.loadGenomeBrowser();
+                  this.fetchLogfile();
                 }
             }
         )
@@ -120,6 +128,19 @@ export default {
                   console.log("Created IGV browser");
             })
           })
+    },
+    async fetchLogfile() {
+      try {
+        const response = await fetch(this.logfile); // Adjust the endpoint as needed
+        if (!response.ok) {
+          throw new Error('Failed to fetch logfile');
+        }
+        const data = await response.text();
+        this.log = data;
+
+      } catch (error) {
+        console.error('Failed to fetch logfile:', error);
+      }
     }
   },
   created(){
@@ -128,3 +149,14 @@ export default {
 
 }
 </script>
+
+<style scoped>
+.logfile-display {
+  white-space: pre-wrap; /* Preserves formatting */
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  max-height: 400px; /* Limit the height */
+  overflow-y: auto; /* Enable scrolling */
+}
+</style>

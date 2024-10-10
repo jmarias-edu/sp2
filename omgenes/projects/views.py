@@ -115,7 +115,7 @@ def fetchRead(request):
 def deleteRead(request):
     if request.method == "POST":
         try:
-            logger.info(request.POST.get("readid"))
+            # logger.info(request.POST.get("readid"))
             read_id = request.POST.get("readid")
             read = VariantRead.objects.filter(id=read_id)[0]
             read.delete()
@@ -190,7 +190,7 @@ def fetchCall(request):
             
             serializer = VariantCallProjectSerializer(reads)
 
-            logger.info(serializer.data)
+            # logger.info(serializer.data)
             
             return JsonResponse({"calls": serializer.data}, status=200)
         except Exception as e:
@@ -202,7 +202,7 @@ def fetchCall(request):
 def deleteCall(request):
     if request.method == "POST":
         try:
-            logger.info(request.POST.get("callid"))
+            # logger.info(request.POST.get("callid"))
             read_id = request.POST.get("callid")
             read = VariantCallProject.objects.filter(id=read_id)[0]
             read.delete()
@@ -211,7 +211,6 @@ def deleteCall(request):
             return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 def runVariantCall(variantCall):
-
     ref = "./omgenes" + variantCall.referenceGenomeURL
     ref = ref.replace("http://localhost:8000", "")
     target = "./omgenes" + variantCall.genomeURL
@@ -231,21 +230,23 @@ def runVariantCall(variantCall):
         f"ref={ref}", 
         f"target={target}",
         f"folder={folder}",
-        "--force"
+        "--forceall", "-p"
     ]
 
-    logger.info(f"Call Status: {variantCall}")
+    # logger.info(f"Call Status: {variantCall}")
     
 
     #Add changing of the vcf kinemerlu uwu
     try:
         # Run the variant call using Snakemake
-        # ls = subprocess.run(["ls"], capture_output=True, text=True)
-        # print(ls)
-        result = subprocess.run(snakemake_cmd, check=True)
+        result = subprocess.run(snakemake_cmd, check=True, capture_output=True)
         variantCall.status = "Completed"
         vcfFile = target.replace("./omgenes/media/", "")
         variantCall.vcfURL = f"http://localhost:8000/media/{vcfFile}.vcf"
+        # print(result.stdout)
+        log = result.stderr.decode("utf-8", "strict").split("\n")[-3].split(" ")[2]
+        copy = subprocess.run(["cp", log, folder])
+        variantCall.log = f"http://localhost:8000/media/{folder.replace("./omgenes/media/","")}/{log.replace(".snakemake/log/","")}"
     except subprocess.CalledProcessError as e:
         # Log error and mark the job as failed
         variantCall.status = "Failed"
