@@ -54,7 +54,8 @@ export default {
       name: "",
       vcf: "",
       logfile: "",
-      log: ""
+      log: "",
+      polling: null,
     }
   },
   name: 'CallView',
@@ -90,7 +91,8 @@ export default {
         )
     },
     runCall(){
-      callHandler.runCall(this.id)
+      callHandler.runCall(this.id);
+      this.startChecking();
     },
     loadGenomeBrowser(){
       loadScript("https://cdn.jsdelivr.net/npm/igv@2.15.13/dist/igv.min.js").then(() => {
@@ -140,6 +142,31 @@ export default {
 
       } catch (error) {
         console.error('Failed to fetch logfile:', error);
+      }
+    },
+
+    startChecking(){
+      if(this.polling){
+        clearInterval(this.polling)
+      }
+      this.polling = setInterval(()=>{
+        this.checkIfDone();
+      }, 1000)
+    },
+    async checkIfDone(){
+      try{
+        callHandler.fetchCall(this.id).then(
+          response =>{
+            if(response.data.calls.status == "Completed"){
+              clearInterval(this.polling)
+              alert("The Variant Call run is finished, please refresh the browser");
+              this.$router.go(0);
+            }
+          }
+        )
+      }
+      catch{
+
       }
     }
   },
