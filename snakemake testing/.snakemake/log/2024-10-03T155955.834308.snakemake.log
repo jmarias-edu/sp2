@@ -1,0 +1,71 @@
+host: jaremlappy
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+index                  1
+map                    1
+sort                   1
+variant_calling        1
+total                  4
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Oct  3 15:59:55 2024]
+localrule map:
+    input: maintests/1/genome.fa, maintests/1/A.fastq, maintests/1/genome.fa.amb, maintests/1/genome.fa.ann, maintests/1/genome.fa.bwt, maintests/1/genome.fa.pac, maintests/1/genome.fa.sa
+    output: maintests/1/mapped_reads/mapped.bam
+    jobid: 2
+    reason: Missing output files: maintests/1/mapped_reads/mapped.bam
+    resources: tmpdir=/tmp
+
+[Thu Oct  3 15:59:57 2024]
+Finished job 2.
+1 of 4 steps (25%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Oct  3 15:59:57 2024]
+localrule sort:
+    input: maintests/1/mapped_reads/mapped.bam
+    output: maintests/1/sorted_reads/sorted.bam
+    jobid: 1
+    reason: Missing output files: maintests/1/sorted_reads/sorted.bam; Input files updated by another job: maintests/1/mapped_reads/mapped.bam
+    resources: tmpdir=/tmp
+
+[Thu Oct  3 15:59:57 2024]
+Finished job 1.
+2 of 4 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Oct  3 15:59:57 2024]
+localrule index:
+    input: maintests/1/sorted_reads/sorted.bam
+    output: maintests/1/sorted_reads/sorted.bam.bai
+    jobid: 4
+    reason: Missing output files: maintests/1/sorted_reads/sorted.bam.bai; Input files updated by another job: maintests/1/sorted_reads/sorted.bam
+    resources: tmpdir=/tmp
+
+[Thu Oct  3 15:59:57 2024]
+Finished job 4.
+3 of 4 steps (75%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Oct  3 15:59:57 2024]
+localrule variant_calling:
+    input: maintests/1/genome.fa, maintests/1/sorted_reads/sorted.bam, maintests/1/sorted_reads/sorted.bam.bai
+    output: maintests/1/variants.vcf
+    jobid: 0
+    reason: Forced execution
+    resources: tmpdir=/tmp
+
+[Thu Oct  3 15:59:57 2024]
+Finished job 0.
+4 of 4 steps (100%) done
+Complete log: .snakemake/log/2024-10-03T155955.834308.snakemake.log

@@ -1,0 +1,8 @@
+host: jaremlappy
+Building DAG of jobs...
+MissingInputException in rule refIndex in file /mnt/Files/Jarem/Academics/4th Year 2nd Sem 2023-2024/SP-Repository/sp2/sp2/snakemake testing/snakefile, line 5:
+Missing input files for rule refIndex:
+    output: maintests/3/ecoli_ref.fa.amb, maintests/3/ecoli_ref.fa.ann, maintests/3/ecoli_ref.fa.bwt, maintests/3/ecoli_ref.fa.pac, maintests/3/ecoli_ref.fa.sa
+    wildcards: ref=maintests/3/ecoli_ref.fa
+    affected files:
+        maintests/3/ecoli_ref.fa

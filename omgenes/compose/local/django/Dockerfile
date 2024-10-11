@@ -13,13 +13,13 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   # psycopg dependencies
   libpq-dev
 
+
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
 
 # Create Python Dependency and Sub-Dependency Wheels.
 RUN pip wheel --wheel-dir /usr/src/app/wheels  \
   -r ${BUILD_ENVIRONMENT}.txt
-
 
 # Python 'run' stage
 FROM python as python-run-stage
@@ -31,12 +31,28 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV BUILD_ENV ${BUILD_ENVIRONMENT}
 
+# conda installation
+RUN apt-get update && apt-get install --no-install-recommends -y wget
+
+ENV PATH $PATH:/opt/miniconda3/bin
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh \
+  && bash Miniconda3-py38_4.9.2-Linux-x86_64.sh -b -p ../opt/miniconda3 \
+  && rm Miniconda3-py38_4.9.2-Linux-x86_64.sh \
+  && conda config --set auto_activate_base false \
+  && conda --version \
+  && conda install anaconda-client -n base
+
+RUN conda create --name snakemake \
+  && conda install -n snakemake -c conda-forge -c bioconda snakemake bcftools bwa samtools
+
 WORKDIR ${APP_HOME}
 
+SHELL ["/bin/bash", "--login", "-c"]
 
 # devcontainer dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  sudo git bash-completion nano ssh
+  sudo git bash-completion nano ssh wget
+
 
 # Create devcontainer user and add it to sudoers
 RUN groupadd --gid 1000 dev-user \
@@ -71,9 +87,8 @@ COPY ./compose/local/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
-
-
 # copy application code to WORKDIR
 COPY . ${APP_HOME}
 
 ENTRYPOINT ["/entrypoint"]
+

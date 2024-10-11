@@ -1,0 +1,5 @@
+host: jaremlappy
+Building DAG of jobs...
+WildcardError in rule map in file /mnt/Files/Jarem/Academics/4th Year 2nd Sem 2023-2024/SP-Repository/sp2/sp2/snakemake testing/snakefile, line 19:
+Wildcards in input files cannot be determined from output files: (rule map, line 34, /mnt/Files/Jarem/Academics/4th Year 2nd Sem 2023-2024/SP-Repository/sp2/sp2/snakemake testing/snakefile)
+'ref'

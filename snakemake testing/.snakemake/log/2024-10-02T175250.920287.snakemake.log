@@ -1,0 +1,42 @@
+host: jaremlappy
+Building DAG of jobs...
+Relative file path './data/genome.fa' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Relative file path './data/A.fastq' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Relative file path './mapped_reads/mapped.bam' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job      count
+-----  -------
+map          1
+total        1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Wed Oct  2 17:52:50 2024]
+localrule map:
+    input: ./data/genome.fa, ./data/A.fastq
+    output: ./mapped_reads/mapped.bam
+    jobid: 0
+    reason: Missing output files: ./mapped_reads/mapped.bam
+    resources: tmpdir=/tmp
+
+[Wed Oct  2 17:52:50 2024]
+Error in rule map:
+    jobid: 0
+    input: ./data/genome.fa, ./data/A.fastq
+    output: ./mapped_reads/mapped.bam
+    shell:
+        
+        bwa mem ./data/genome.fa ./data/A.fastq | samtools view -Sb - > ./mapped_reads/mapped.bam         
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job map since they might be corrupted:
+./mapped_reads/mapped.bam
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-10-02T175250.920287.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

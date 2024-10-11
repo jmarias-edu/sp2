@@ -1,0 +1,92 @@
+host: jaremlappy
+Building DAG of jobs...
+Relative file path './data/genome.fa' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Relative file path './data/genome.fa' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Relative file path './data/A.fastq' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+index                  1
+map                    1
+sort                   1
+variant_calling        1
+total                  4
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Wed Oct  2 18:18:11 2024]
+localrule map:
+    input: ./data/genome.fa, ./data/A.fastq
+    output: /mapped_reads/mapped.bam
+    jobid: 2
+    reason: Missing output files: /mapped_reads/mapped.bam
+    resources: tmpdir=/tmp
+
+Traceback (most recent call last):
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/cli.py", line 2095, in args_to_api
+    dag_api.execute_workflow(
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/api.py", line 595, in execute_workflow
+    workflow.execute(
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/workflow.py", line 1302, in execute
+    raise e
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/workflow.py", line 1298, in execute
+    success = self.scheduler.schedule()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/scheduler.py", line 302, in schedule
+    self.run(
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/scheduler.py", line 407, in run
+    executor.run_jobs(jobs)
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake_interface_executor_plugins/executors/base.py", line 72, in run_jobs
+    self.run_job(job)
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/executors/local.py", line 106, in run_job
+    future = self.run_single_job(job)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/executors/local.py", line 182, in run_single_job
+    self.cached_or_run, job, run_wrapper, *self.job_args_and_prepare(job)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/executors/local.py", line 114, in job_args_and_prepare
+    async_run(job.prepare())
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/common/__init__.py", line 89, in async_run
+    return asyncio.run(coroutine)
+           ^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/jobs.py", line 805, in prepare
+    f.prepare()
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/io.py", line 687, in prepare
+    raise e
+
+  File "/home/mirage/mambaforge/envs/snakemake/lib/python3.12/site-packages/snakemake/io.py", line 683, in prepare
+    os.makedirs(dirpath, exist_ok=True)
+
+  File "<frozen os>", line 225, in makedirs
+
+PermissionError: [Errno 13] Permission denied: '/mapped_reads'
+

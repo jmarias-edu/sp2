@@ -1,0 +1,26 @@
+Building DAG of jobs...
+Relative file path './data/genome.fa' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Relative file path './data/A.fastq' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job      count
+-----  -------
+map          1
+total        1
+
+Select jobs to execute...
+
+[Wed Oct  2 19:19:08 2024]
+rule map:
+    input: ./data/genome.fa, ./data/A.fastq
+    output: mapped_reads/mapped.bam
+    jobid: 0
+    reason: Set of input files has changed since last execution; Code has changed since last execution
+    resources: tmpdir=/tmp
+
+[Wed Oct  2 19:19:09 2024]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: .snakemake/log/2024-10-02T191908.728199.snakemake.log

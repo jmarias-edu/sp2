@@ -1,0 +1,33 @@
+host: jaremlappy
+Building DAG of jobs...
+Relative file path './data/genome.fa' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Relative file path './data/A.fastq' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job      count
+-----  -------
+map          1
+total        1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Oct  3 14:14:12 2024]
+localrule map:
+    input: ./data/genome.fa, ./data/A.fastq
+    output: mapped_reads/mapped.bam
+    jobid: 0
+    reason: Set of input files has changed since last execution; Code has changed since last execution
+    resources: tmpdir=/tmp
+
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule map in file /mnt/Files/Jarem/Academics/4th Year 2nd Sem 2023-2024/SP-Repository/sp2/sp2/snakemake testing/snakefile, line 15:
+Job 0 completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+mapped_reads/mapped.bam (missing locally, parent dir contents: )
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-10-03T141412.513147.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

@@ -1,0 +1,24 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job      count
+-----  -------
+map          1
+total        1
+
+Select jobs to execute...
+
+[Wed Oct  2 18:59:10 2024]
+rule map:
+    input: data/genome.fa, data/A.fastq
+    output: mapped_reads/mapped.bam
+    jobid: 0
+    reason: Code has changed since last execution
+    resources: tmpdir=/tmp
+
+[Wed Oct  2 18:59:10 2024]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: .snakemake/log/2024-10-02T185910.370078.snakemake.log

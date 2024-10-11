@@ -1,0 +1,7 @@
+host: jaremlappy
+Building DAG of jobs...
+Relative file path './calls/variants.vcf' starts with './'. This is redundant and strongly discouraged. It can also lead to inconsistent results of the file-matching approach used by Snakemake. You can simply omit the './' for relative file paths.
+MissingInputException in rule all in file /mnt/Files/Jarem/Academics/4th Year 2nd Sem 2023-2024/SP-Repository/sp2/sp2/snakemake testing/snakefile, line 1:
+Missing input files for rule all:
+    affected files:
+        ./calls/variants.vcf

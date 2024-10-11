@@ -1,12 +1,13 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
+
 export default axios.create({
-	baseURL: "http://localhost:8000/",
-	timeout: 5000,
+	baseURL: process.env.VUE_APP_API_URL,
+	timeout: 50000,
 	headers: {
-		'Access-Control-Allow-Origin': '*',
+		"X-CSRFToken": Cookies.get('csrftoken'),
 		"Content-Type": "application/x-www-form-urlencoded",
-		'X-CSRFToken': Cookies.get('csrftoken'),
+		"Authorization": Cookies.get('authtoken'),
 	}
 })

@@ -1,0 +1,87 @@
+host: jaremlappy
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+index                  1
+map                    1
+refIndex               1
+sort                   1
+variant_calling        1
+total                  5
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Oct  6 17:40:31 2024]
+localrule refIndex:
+    input: maintests/3/ecoli_ref.fna
+    output: maintests/3/ecoli_ref.fna.amb, maintests/3/ecoli_ref.fna.ann, maintests/3/ecoli_ref.fna.bwt, maintests/3/ecoli_ref.fna.pac, maintests/3/ecoli_ref.fna.sa
+    jobid: 3
+    reason: Missing output files: maintests/3/ecoli_ref.fna.sa, maintests/3/ecoli_ref.fna.amb, maintests/3/ecoli_ref.fna.ann, maintests/3/ecoli_ref.fna.pac, maintests/3/ecoli_ref.fna.bwt
+    wildcards: ref=maintests/3/ecoli_ref.fna
+    resources: tmpdir=/tmp
+
+[Sun Oct  6 17:40:33 2024]
+Finished job 3.
+1 of 5 steps (20%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Oct  6 17:40:33 2024]
+localrule map:
+    input: maintests/3/ecoli_ref.fna, maintests/3/P0AES4.fasta, maintests/3/ecoli_ref.fna.amb, maintests/3/ecoli_ref.fna.ann, maintests/3/ecoli_ref.fna.bwt, maintests/3/ecoli_ref.fna.pac, maintests/3/ecoli_ref.fna.sa
+    output: maintests/3/mapped_reads/mapped.bam
+    jobid: 2
+    reason: Missing output files: maintests/3/mapped_reads/mapped.bam; Input files updated by another job: maintests/3/ecoli_ref.fna.bwt, maintests/3/ecoli_ref.fna.sa, maintests/3/ecoli_ref.fna.amb, maintests/3/ecoli_ref.fna.ann, maintests/3/ecoli_ref.fna.pac
+    resources: tmpdir=/tmp
+
+[Sun Oct  6 17:40:33 2024]
+Finished job 2.
+2 of 5 steps (40%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Oct  6 17:40:33 2024]
+localrule sort:
+    input: maintests/3/mapped_reads/mapped.bam
+    output: maintests/3/sorted_reads/sorted.bam
+    jobid: 1
+    reason: Missing output files: maintests/3/sorted_reads/sorted.bam; Input files updated by another job: maintests/3/mapped_reads/mapped.bam
+    resources: tmpdir=/tmp
+
+[Sun Oct  6 17:40:33 2024]
+Finished job 1.
+3 of 5 steps (60%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Oct  6 17:40:33 2024]
+localrule index:
+    input: maintests/3/sorted_reads/sorted.bam
+    output: maintests/3/sorted_reads/sorted.bam.bai
+    jobid: 4
+    reason: Missing output files: maintests/3/sorted_reads/sorted.bam.bai; Input files updated by another job: maintests/3/sorted_reads/sorted.bam
+    resources: tmpdir=/tmp
+
+[Sun Oct  6 17:40:33 2024]
+Finished job 4.
+4 of 5 steps (80%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Oct  6 17:40:33 2024]
+localrule variant_calling:
+    input: maintests/3/ecoli_ref.fna, maintests/3/sorted_reads/sorted.bam, maintests/3/sorted_reads/sorted.bam.bai
+    output: maintests/3/P0AES4.fasta.vcf
+    jobid: 0
+    reason: Forced execution
+    resources: tmpdir=/tmp
+
+[Sun Oct  6 17:40:33 2024]
+Finished job 0.
+5 of 5 steps (100%) done
+Complete log: .snakemake/log/2024-10-06T174031.922023.snakemake.log
