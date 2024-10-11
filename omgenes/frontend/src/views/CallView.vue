@@ -4,21 +4,21 @@
         <v-card class="ma-4">
           <v-card-title>
             {{ this.ref.split("/").pop() }}
-            <v-btn :href="this.ref" style="float: right;">Download</v-btn>
+            <v-btn :href="this.ref" style="float: right;" color="info">Download</v-btn>
             </v-card-title>
           <v-card-subtitle>Reference Genome</v-card-subtitle>
         </v-card>
         <v-card class="ma-4">
           <v-card-title>
             {{ this.genome.split("/").pop() }}
-            <v-btn :href="this.genome" style="float: right;">Download</v-btn>
+            <v-btn :href="this.genome" style="float: right;" color="info">Download</v-btn>
           </v-card-title>
           <v-card-subtitle>Target Genome</v-card-subtitle>
         </v-card>
         <v-card v-if="this.vcf!=null" class="ma-4">
           <v-card-title>
             {{ this.vcf.split("/").pop() }} 
-            <v-btn :href="this.vcf" style="float: right;">Download</v-btn>
+            <v-btn :href="this.vcf" style="float: right;" color="info">Download</v-btn>
           </v-card-title>
           <v-card-subtitle>Reference Genome</v-card-subtitle>
         </v-card>
@@ -33,8 +33,9 @@
     </v-card>
 
     <v-card title="Variant Call Settings" class="pa-4 w-100">
-      <v-btn @click="deleteCall" style="float: right;">Delete Call</v-btn>
-      <v-btn @click="runCall" style="float: right;">Run Call</v-btn>
+      <v-btn @click="deleteCall" style="float: right;" color="red">Delete Call</v-btn>
+      <v-btn @click="runCall" style="float: right;" v-if="this.status!='Running'" color="info">Run Call</v-btn>
+      <p style="float: right;" v-else> Call is currently running, please wait </p>
     </v-card>
   </div>
 </template>
@@ -42,7 +43,7 @@
 <script>
 
 import callHandler from "@/api/call"
-import { onMounted, mounted, updated, beforeRouteUpdate, created, beforeUpdate } from 'vue'
+import { onMounted, mounted, updated, beforeRouteUpdate, created, beforeUpdate, } from 'vue'
 import {loadScript} from "vue-plugin-load-script";
 
 export default {
@@ -56,6 +57,7 @@ export default {
       logfile: "",
       log: "",
       polling: null,
+      status: ""
     }
   },
   name: 'CallView',
@@ -82,6 +84,7 @@ export default {
                 this.genome = response.data.calls.genomeURL;
                 this.vcf = response.data.calls.vcfURL;
                 this.logfile = response.data.calls.log;
+                this.status = response.data.calls.status;
 
                 if (this.vcf!=null){
                   this.loadGenomeBrowser();
@@ -93,6 +96,7 @@ export default {
     runCall(){
       callHandler.runCall(this.id);
       this.startChecking();
+      this.status = "Running";
     },
     loadGenomeBrowser(){
       loadScript("https://cdn.jsdelivr.net/npm/igv@2.15.13/dist/igv.min.js").then(() => {
@@ -159,7 +163,12 @@ export default {
           response =>{
             if(response.data.calls.status == "Completed"){
               clearInterval(this.polling)
-              alert("The Variant Call run is finished, please refresh the browser");
+              alert("The Variant Call run is finished, please refresh the browser to see the results:>");
+              this.$router.go(0);
+            }
+            else if(response.data.calls.status == "Failed"){
+              clearInterval(this.polling)
+              alert("The Variant Call run failed, please refresh the browser to try again :<");
               this.$router.go(0);
             }
           }
@@ -172,6 +181,7 @@ export default {
   },
   created(){
     this.fetchCall();
+    // console.log(process.env.VUE_APP_BACKEND_URL);
   }
 
 }

@@ -78,8 +78,8 @@ export default {
               fileHandler.uploadProjectFile(vcfFile).then(
                 response3 => {
                   // console.log(response3)
-                  updateData.append("genome", "http://localhost:8000" + response2.data.file)
-                  updateData.append("vcf", "http://localhost:8000" + response3.data.file)
+                  updateData.append("genome", process.env.VUE_APP_BACKEND_URL + response2.data.file)
+                  updateData.append("vcf", process.env.VUE_APP_BACKEND_URL + response3.data.file)
                   updateData.append("readID", response1.data.id)
                   fileHandler.updateReadsLinks(updateData).then(
                     response4 => {

@@ -2,6 +2,7 @@ from django.shortcuts import render
 import json
 import os
 import subprocess
+from django.conf import settings
 
 # Create your views here.
 from rest_framework import status
@@ -212,9 +213,9 @@ def deleteCall(request):
 
 def runVariantCall(variantCall):
     ref = "./omgenes" + variantCall.referenceGenomeURL
-    ref = ref.replace("http://localhost:8000", "")
+    ref = ref.replace(settings.BACKEND_LINK, "")
     target = "./omgenes" + variantCall.genomeURL
-    target = target.replace("http://localhost:8000", "")
+    target = target.replace(settings.BACKEND_LINK, "")
     folder = "./omgenes/media/" + variantCall.folder[:-1]
 
     print(ref)
@@ -235,18 +236,19 @@ def runVariantCall(variantCall):
 
     # logger.info(f"Call Status: {variantCall}")
     
-
+    variantCall.status = "Running"
+    variantCall.save()
     #Add changing of the vcf kinemerlu uwu
     try:
         # Run the variant call using Snakemake
         result = subprocess.run(snakemake_cmd, check=True, capture_output=True)
         variantCall.status = "Completed"
         vcfFile = target.replace("./omgenes/media/", "")
-        variantCall.vcfURL = f"http://localhost:8000/media/{vcfFile}.vcf"
+        variantCall.vcfURL = f"{settings.BACKEND_LINK}/media/{vcfFile}.vcf"
         # print(result.stdout)
         log = result.stderr.decode("utf-8", "strict").split("\n")[-3].split(" ")[2]
         copy = subprocess.run(["cp", log, folder])
-        variantCall.log = f"http://localhost:8000/media/{folder.replace("./omgenes/media/","")}/{log.replace(".snakemake/log/","")}"
+        variantCall.log = f"{settings.BACKEND_LINK}/media/{folder.replace("./omgenes/media/","")}/{log.replace(".snakemake/log/","")}"
     except subprocess.CalledProcessError as e:
         # Log error and mark the job as failed
         variantCall.status = "Failed"

@@ -66,3 +66,5 @@ INSTALLED_APPS += ["django_extensions"]
 # Your stuff...
 # ------------------------------------------------------------------------------
 CORS_ALLOW_ORIGIN_ALL = True
+
+BACKEND_LINK = "http://localhost:8000"

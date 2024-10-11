@@ -5,14 +5,14 @@
         <v-card class="ma-4">
           <v-card-title>
             {{ this.genome.split("/").pop() }}
-            <v-btn :href="this.genome" style="float: right;">Download</v-btn>
+            <v-btn :href="this.genome" style="float: right;" color="info">Download</v-btn>
             </v-card-title>
           <v-card-subtitle>Reference Genome</v-card-subtitle>
         </v-card>
         <v-card class="ma-4">
           <v-card-title>
             {{ this.vcf.split("/").pop() }}
-            <v-btn :href="this.vcf" style="float: right;">Download</v-btn>
+            <v-btn :href="this.vcf" style="float: right;" color="info">Download</v-btn>
           </v-card-title>
           <v-card-subtitle>VCF File</v-card-subtitle>
         </v-card>
@@ -23,8 +23,8 @@
     </v-card>
 
     <v-card title="Variant Read Settings" class="pa-4 w-100" v-if="this.vcf!=null">
-      <v-btn @click="deleteRead" style="float: right;">Delete Project</v-btn>
-      <v-btn @click="test" style="float: right;">Test</v-btn>
+      <v-btn @click="deleteRead" style="float: right;" color="red">Delete Project</v-btn>
+      <!-- <v-btn @click="test" style="float: right;">Test</v-btn> -->
     </v-card>
   </div>
 </template>

@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 
 export default axios.create({
-	baseURL: "http://localhost:8080/",
+	baseURL: process.env.VUE_APP_API_URL,
 	timeout: 50000,
 	headers: {
 		"X-CSRFToken": Cookies.get('csrftoken'),
