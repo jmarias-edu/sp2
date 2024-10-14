@@ -313,7 +313,7 @@ SPECTACULAR_SETTINGS = {
 # ------------------------------------------------------------------------------
 
 GOOGLE_CLIENT_ID='129850221361-koj4k3re7jjhr33i42ok2f3pj5f28mu2.apps.googleusercontent.com'
-CORS_ORIGIN_WHITELIST = [
+CORS_ALLOWED_ORIGINS = [
     'https://localhost:8080',
     'https://localhost:81',
     'http://localhost:8080',
@@ -323,7 +323,8 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 ALLOWED_HOSTS = [
-    'localhost'
+    'localhost',
+    '.omgenes.click'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
