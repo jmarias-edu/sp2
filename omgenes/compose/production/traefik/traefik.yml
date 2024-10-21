@@ -27,6 +27,7 @@ certificatesResolvers:
 
 http:
   routers:
+
     django:
       rule: "Host(`api.omgenes.click`)"
       entryPoints:
@@ -54,7 +55,14 @@ http:
       # https://doc.traefik.io/traefik/master/middlewares/http/headers/#hostsproxyheaders
       # https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
       headers:
+        # accessControlAllowOrigin: "https://omgenes.click"
+        # accessControlAllowMethods: "GET, POST, OPTIONS"
+        # accessControlAllowHeaders: "Origin, Authorization, X-Requested-With, Content-Type, Accept"
         hostsProxyHeaders: ['X-CSRFToken']
+    # cors:
+    #   headers:
+        
+    
 
   services:
     django:

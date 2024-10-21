@@ -50,9 +50,14 @@ WORKDIR ${APP_HOME}
 
 SHELL ["/bin/bash", "--login", "-c"]
 
-RUN addgroup --system django \
-    && adduser --system --ingroup django django
+RUN apt-get update && apt-get install --no-install-recommends -y \
+  sudo git bash-completion nano ssh wget
 
+RUN addgroup --system django \
+    && adduser --system --ingroup django --shell /bin/bash django
+
+RUN echo "django ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/django \
+    && chmod 0440 /etc/sudoers.d/django
 
 # Install required system dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -89,7 +94,7 @@ COPY --chown=django:django . ${APP_HOME}
 # make django owner of the WORKDIR directory as well.
 RUN chown -R django:django ${APP_HOME}
 
-USER django
+# USER django
 
 RUN DATABASE_URL="" \
   DJANGO_SETTINGS_MODULE="config.settings.test" \
