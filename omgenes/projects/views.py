@@ -270,7 +270,7 @@ def runVariantCall(variantCall):
         variantCall.status = "Completed"
 
         if(settings.BACKEND_LINK=="http://localhost:8000"):
-            vcfFile = target.replace("/app/omgenes/media", "")
+            vcfFile = target.replace("./omgenes/media/", "")
         else:
             vcfFile = target.replace("/app/omgenes/media", "")
 

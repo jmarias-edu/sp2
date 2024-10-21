@@ -8,8 +8,8 @@
           <!-- <v-toolbar-title class="font-weight-bold ma-1">OMGenes</v-toolbar-title> -->
           <v-btn text to="/" class="ma-1">Home</v-btn>
           <v-btn text to="/genomebrowser" class="ma-1">Sample VCF</v-btn>
-          <v-btn text to="/genomebrowser" class="ma-1">About</v-btn>
-          <v-btn text to="/genomebrowser" class="ma-1">Workflow</v-btn>
+          <v-btn text to="/about" class="ma-1">About</v-btn>
+          <v-btn text to="/workflow" class="ma-1">Workflow</v-btn>
         </template>
         <template v-slot:append>
           <div v-if="isEmpty(user)">
