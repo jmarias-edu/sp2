@@ -212,27 +212,52 @@ def deleteCall(request):
             return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 def runVariantCall(variantCall):
-    ref = "./omgenes" + variantCall.referenceGenomeURL
-    ref = ref.replace(settings.BACKEND_LINK, "")
-    target = "./omgenes" + variantCall.genomeURL
-    target = target.replace(settings.BACKEND_LINK, "")
-    folder = "./omgenes/media/" + variantCall.folder[:-1]
 
-    print(ref)
-    print(target)
-    print(folder)
+    if(settings.BACKEND_LINK=="http://localhost:8000"):
+        ref = "./omgenes" + variantCall.referenceGenomeURL
+        ref = ref.replace(settings.BACKEND_LINK, "")
+        target = "./omgenes" + variantCall.genomeURL
+        target = target.replace(settings.BACKEND_LINK, "")
+        folder = "./omgenes/media/" + variantCall.folder[:-1]
 
-    snakemake_cmd = [
-        "conda", "run", "-n", "snakemake",  # Replace with your Snakemake environment name
-        "snakemake", 
-        "--snakefile", "./workflows/snakefile",
-        "--cores", "1",  # Adjust cores as needed
-        "--config",
-        f"ref={ref}", 
-        f"target={target}",
-        f"folder={folder}",
-        "--forceall", "-p"
-    ]
+        print(ref)
+        print(target)
+        print(folder)
+
+        snakemake_cmd = [
+            "conda", "run", "-n", "snakemake",  # Replace with your Snakemake environment name
+            "snakemake", 
+            "--snakefile", "./workflows/snakefile",
+            "--cores", "1",  # Adjust cores as needed
+            "--config",
+            f"ref={ref}", 
+            f"target={target}",
+            f"folder={folder}",
+            "--forceall", "-p"
+        ]
+    else:
+
+        ref = "/app/omgenes" + variantCall.referenceGenomeURL
+        ref = ref.replace(settings.BACKEND_LINK, "")
+        target = "/app/omgenes" + variantCall.genomeURL
+        target = target.replace(settings.BACKEND_LINK, "")
+        folder = "/app/omgenes/media/" + variantCall.folder[:-1]
+
+        print(ref)
+        print(target)
+        print(folder)
+
+        snakemake_cmd = [
+            "conda", "run", "-n", "snakemake",  # Replace with your Snakemake environment name
+            "snakemake", 
+            "--snakefile", "/app/workflows/snakefile",
+            "--cores", "1",  # Adjust cores as needed
+            "--config",
+            f"ref={ref}", 
+            f"target={target}",
+            f"folder={folder}",
+            "--forceall", "-p"
+        ]
 
     # logger.info(f"Call Status: {variantCall}")
     
@@ -243,12 +268,20 @@ def runVariantCall(variantCall):
         # Run the variant call using Snakemake
         result = subprocess.run(snakemake_cmd, check=True, capture_output=True)
         variantCall.status = "Completed"
-        vcfFile = target.replace("./omgenes/media/", "")
+
+        if(settings.BACKEND_LINK=="http://localhost:8000"):
+            vcfFile = target.replace("/app/omgenes/media", "")
+        else:
+            vcfFile = target.replace("/app/omgenes/media", "")
+
         variantCall.vcfURL = f"{settings.BACKEND_LINK}/media/{vcfFile}.vcf"
         # print(result.stdout)
         log = result.stderr.decode("utf-8", "strict").split("\n")[-3].split(" ")[2]
         copy = subprocess.run(["cp", log, folder])
-        variantCall.log = f"{settings.BACKEND_LINK}/media/{folder.replace("./omgenes/media/","")}/{log.replace(".snakemake/log/","")}"
+        if(settings.BACKEND_LINK=="http://localhost:8000"):
+            variantCall.log = f"{settings.BACKEND_LINK}/media/{folder.replace("./omgenes/media/","")}/{log.replace(".snakemake/log/","")}"
+        else:
+            variantCall.log = f"{settings.BACKEND_LINK}/media/{folder.replace("/app/omgenes/media","")}/{log.replace(".snakemake/log/","")}"
     except subprocess.CalledProcessError as e:
         # Log error and mark the job as failed
         variantCall.status = "Failed"

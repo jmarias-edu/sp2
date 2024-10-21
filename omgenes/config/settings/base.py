@@ -297,6 +297,14 @@ REST_FRAMEWORK = {
 CORS_URLS_REGEX = r".*$"
 CORS_ALLOW_HEADERS = "*"
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PATCH',
+    'PUT',
+    'DELETE',
+    'OPTIONS',
+]
 
 # CSRF_HEADER_NAME = "HTTP-X-CSRFTOKEN"
 
@@ -313,6 +321,15 @@ SPECTACULAR_SETTINGS = {
 # ------------------------------------------------------------------------------
 
 GOOGLE_CLIENT_ID='129850221361-koj4k3re7jjhr33i42ok2f3pj5f28mu2.apps.googleusercontent.com'
+CORS_ALLOWED_ORIGINS = [
+    'https://localhost:8080',
+    'https://localhost:81',
+    'http://localhost:8080',
+    'http://localhost:81',
+    'https://omgenes.click',
+    'http://omgenes.click',
+]
+
 CORS_ORIGIN_WHITELIST = [
     'https://localhost:8080',
     'https://localhost:81',
@@ -323,7 +340,8 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 ALLOWED_HOSTS = [
-    'localhost'
+    'localhost',
+    '.omgenes.click'
 ]
 
 CSRF_TRUSTED_ORIGINS = [

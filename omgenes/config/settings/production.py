@@ -156,4 +156,6 @@ SPECTACULAR_SETTINGS["SERVERS"] = [
 ]
 # Your stuff...
 # ------------------------------------------------------------------------------
-BACKEND_LINK = "http://api.omgenes.click"
+BACKEND_LINK = "https://api.omgenes.click"
+
+DEBUG = True

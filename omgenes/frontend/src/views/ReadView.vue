@@ -22,9 +22,8 @@
         <div id="igv-div"></div>
     </v-card>
 
-    <v-card title="Variant Read Settings" class="pa-4 w-100" v-if="this.vcf!=null">
+    <v-card title="Variant Read Settings" class="pa-4 w-100">
       <v-btn @click="deleteRead" style="float: right;" color="red">Delete Project</v-btn>
-      <!-- <v-btn @click="test" style="float: right;">Test</v-btn> -->
     </v-card>
   </div>
 </template>

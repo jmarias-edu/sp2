@@ -11,6 +11,8 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from .models import gauthuser
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import api_view
+from rest_framework.permissions import AllowAny
 
 
 from django.contrib.auth import authenticate, login
@@ -35,15 +37,15 @@ def verify_google_token(request):
         token = request.POST.get("id_token")
         idinfo = id_token.verify_oauth2_token(token, requests.Request(), settings.GOOGLE_CLIENT_ID, clock_skew_in_seconds=3)
         userid = idinfo['sub']
-        logger.info(idinfo)
+        # logger.info(idinfo)
 
 
         user_fetch = gauthuser.objects.filter(user_id=userid)
-        logger.info(user_fetch)
+        # logger.info(user_fetch)
 
         if len(user_fetch)>0:
             user = user_fetch[0]
-            logger.info("Old User!")
+            # logger.info("Old User!")
         else:
             user = gauthuser.objects.create(
                 f_name=idinfo["given_name"], 
@@ -51,7 +53,7 @@ def verify_google_token(request):
                 email=idinfo["email"],
                 user_id=userid,
                 username=idinfo["email"])
-            logger.info("New User!")
+            # logger.info("New User!")
 
         fname = user.f_name
         lname = user.l_name
@@ -64,6 +66,8 @@ def verify_google_token(request):
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)})
 
+@csrf_exempt
+@ensure_csrf_cookie
 def get_user_data(request):
     authentication_classes = [TokenAuthentication]
     # token = request.COOKIES.get("authtoken").split("%")[1]

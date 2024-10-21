@@ -16,7 +16,7 @@
                 {
                     "type": "variant",
                     "format": "vcf",
-                    "url": "http://localhost:8000/media/uploads/all.vcf"
+                    "url": "https://api.omgenes.click/media/uploads/all.vcf"
                 }
             ]
         };
