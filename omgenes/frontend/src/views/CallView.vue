@@ -24,7 +24,7 @@
         </v-card>
     </v-card>
 
-    <v-card title="Genome Browser View" class="pa-4 w-100" v-if="this.vcf!=null">
+    <v-card title="Genome Browser View" class="pa-4 w-100" style="height: 500px;" v-if="this.vcf!=null">
       <div id="igv-div"></div>
     </v-card>
 
@@ -57,7 +57,9 @@ export default {
       logfile: "",
       log: "",
       polling: null,
-      status: ""
+      status: "",
+      bam: "",
+
     }
   },
   name: 'CallView',
@@ -85,6 +87,8 @@ export default {
                 this.vcf = response.data.calls.vcfURL;
                 this.logfile = response.data.calls.log;
                 this.status = response.data.calls.status;
+                this.bam = process.env.VUE_APP_API_URL + "media/" + response.data.calls.folder + "sorted_reads/sorted.bam";
+                console.log(this.bam);
 
                 if (this.vcf!=null){
                   this.loadGenomeBrowser();
@@ -121,10 +125,18 @@ export default {
                       fontSize: 30
                     },
                     {
-                        "name": "VCF File",
-                        "type": "variant",
-                        "format": "vcf",
-                        "url": this.vcf
+                      "name": "Sorted Sample Reads",
+                      "type": "alignment",
+                      "format": "bam",
+                      "url": this.bam,
+                      "indexURL": this.bam + ".bai",
+                      "height": 50
+                    },
+                    {
+                      "name": "VCF File",
+                      "type": "variant",
+                      "format": "vcf",
+                      "url": this.vcf
                     }
                 ]
               };

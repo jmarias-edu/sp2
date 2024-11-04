@@ -18,7 +18,7 @@
         </v-card>
     </v-card>
 
-    <v-card title="Genome Browser View" class="pa-4">
+    <v-card title="Genome Browser View" class="pa-4" style="height: 500px;">
         <div id="igv-div"></div>
     </v-card>
 
