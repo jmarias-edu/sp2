@@ -22,9 +22,18 @@
         <div id="igv-div"></div>
     </v-card>
 
+    <v-card title="Continuation of Instructions">
+      <v-card-text>
+        <pre>
+You may proceed to testing the Variant Calling function by pressing "Create New Call"
+        </pre>
+      </v-card-text>
+    </v-card>
+
     <v-card title="Variant Read Settings" class="pa-4 w-100">
       <v-btn @click="deleteRead" style="float: right;" color="red">Delete Project</v-btn>
     </v-card>
+
   </div>
 </template>
 

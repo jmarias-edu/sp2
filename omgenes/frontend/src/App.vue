@@ -4,7 +4,7 @@
         <!-- <v-app-bar-title>OMGenes</v-app-bar-title> -->
         <template v-slot:prepend>
           <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
-          <img src="/appbarlogo.png" style="height: 100%;"/>
+          <router-link to="/" style="height: 100%;"><img src="/appbarlogo.png" style="height: 100%;"/></router-link>
           <!-- <v-toolbar-title class="font-weight-bold ma-1">OMGenes</v-toolbar-title> -->
           <v-btn text to="/" class="ma-1">Home</v-btn>
           <v-btn text to="/genomebrowser" class="ma-1">Sample VCF</v-btn>

@@ -33,6 +33,17 @@
     </v-card>
 
     <v-card title="Variant Call Settings" class="pa-4 w-100">
+
+      <v-card-text>
+      <pre>
+Creating new VCF File with a Reference and Sample Genome
+6. Press Run Call and wait for the server to finish processing
+7. Press "Ok" to restart when the alert prompt appears
+
+After viewing the results, you may go back to the home page to answer the evaluation form! ^^
+      </pre>
+      </v-card-text>
+
       <v-btn @click="deleteCall" style="float: right;" color="red">Delete Call</v-btn>
       <v-btn @click="runCall" style="float: right;" v-if="this.status!='Running'" color="info">Run Call</v-btn>
       <p style="float: right;" v-else> Call is currently running, please wait </p>

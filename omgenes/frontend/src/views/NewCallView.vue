@@ -1,13 +1,26 @@
 <template>
   <div>
 
-    <v-card title="Create New Variant Call Job" class="pa-4">
+    <v-card title="Create New Variant Call" class="pa-4">
       <v-form ref="form" v-model="valid">
-        <v-text-field :rules="textRules" label="Variant Call" v-model="name" required></v-text-field>
+        <v-text-field :rules="textRules" label="Variant Call Name" v-model="name" required></v-text-field>
         <v-file-input :rules="fileRules" accept=".fa,.fasta,.fastq" v-model="ref" label="Reference Genome File" required></v-file-input>
-        <v-file-input :rules="fileRules" accept=".fa,.fasta,.fastq" v-model="genome" label="Genome to Compare" required></v-file-input>
+        <v-file-input :rules="fileRules" accept=".fa,.fasta,.fastq" v-model="genome" label="Sample Genome to Call" required></v-file-input>
         <v-btn @click="createCall">Create</v-btn>
       </v-form>
+    </v-card>
+
+    <v-card title="Continuation of Instructions">
+      <v-card-text>
+      <pre>
+Creating new VCF File with a Reference and Sample Genome
+1. Open the Create New Call page from the Navigation Drawer on the left
+2. Input a name for the Variant Call
+3. Upload the Reference Genome File and the Sample Genome File in the Variant Call Folder in their respective containers
+4. Press Create
+5. Click on the name of the newly created Variant Call
+      </pre>
+      </v-card-text>
     </v-card>
   </div>
 </template>

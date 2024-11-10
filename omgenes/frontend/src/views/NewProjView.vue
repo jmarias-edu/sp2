@@ -7,11 +7,25 @@
 
     <v-card title="Create New VCF Read" class="pa-4">
       <v-form ref="form" v-model="valid">
-        <v-text-field :rules="textRules" label="Project Name" v-model="name" required></v-text-field >
-        <v-file-input :rules="fileRules" accept=".fa,.fasta,.fastq" v-model="genome" label="Genome File" required></v-file-input>
+        <v-text-field :rules="textRules" label="VCF Read Name" v-model="name" required></v-text-field >
+        <v-file-input :rules="fileRules" accept=".fa,.fasta,.fastq" v-model="genome" label="Reference Genome File" required></v-file-input>
         <v-file-input :rules="fileRules" accept=".vcf" v-model="vcf" label="VCF File" required></v-file-input>
         <v-btn @click="createProject">Create</v-btn>
       </v-form>
+    </v-card>
+
+
+    <v-card title="Continuation of Instructions">
+      <v-card-text>
+      <pre>
+Viewing existing VCF Files with Reference Genome
+1. Open the Create New Read page from the Navigation Drawer on the left.
+2. Input a name for the Variant Call Read.
+3. Upload the Reference Genome File and the VCF File in the Variant Read Folder in their respective containers.
+4. Press Create.
+5. Click the name of the newly created Variant Call Read to view your VCF File in the IGV Genome Browser.
+      </pre>
+      </v-card-text>
     </v-card>
 
   </div>
