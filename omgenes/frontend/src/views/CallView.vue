@@ -1,5 +1,20 @@
 <template>
   <div>
+    <v-card title="Running the Variant Call" color="info" class="pa-4 w-100">
+      <v-card-text>
+      <pre style="white-space: pre-wrap;">
+Creating new VCF File with a Reference and Sample Genome
+6. Press Run Call at the bottom of the page and wait for the server to finish processing
+7. Press "Ok" to restart when the alert prompt appears
+
+Once this page reloads, you will see the uploaded files and a newly created VCF file that you can download.
+
+The Genome Browser will also present the reference genome, vcf file, and alignment file used in the Variant Call. A log of what happened during the variant call in the backend is also available below the genome browser.
+
+After viewing the results, you may go back to the home page to answer the evaluation form! ^^
+      </pre>
+      </v-card-text>
+    </v-card>
     <v-card :title="`${this.name} Files`" class="pa-4 w-100">
         <v-card class="ma-4">
           <v-card-title>
@@ -24,8 +39,18 @@
         </v-card>
     </v-card>
 
-    <v-card title="Genome Browser View" class="pa-4 w-100" style="height: 500px;" v-if="this.vcf!=null">
+    <v-card title="Genome Browser View" class="pa-4 w-100" style="height: 600px;" v-if="this.vcf!=null">
       <div id="igv-div"></div>
+
+      <v-card-text>
+      <pre style="white-space: pre-wrap;">
+
+About the Variant Call Test files:
+The reference and sample genome I provided in this test are from COVID-19, the reference genome is the original COVID-19 virus and the sample genome is a strain of COVID that has the D614G mutation which caused a change in its spike protein that made it much more infectious.
+
+You may see the specific variant at the position 23404, copy "NC_045512v2:23,404" to the search bar in the IGV Genome Browser to see the mutation in the VCF File, you may click the blue bar at the position to see the A->G mutation.
+      </pre>
+      </v-card-text>
     </v-card>
 
     <v-card title="Variant Call Log" class="pa-4 w-100" v-if="this.vcf!=null">
@@ -34,15 +59,7 @@
 
     <v-card title="Variant Call Settings" class="pa-4 w-100">
 
-      <v-card-text>
-      <pre>
-Creating new VCF File with a Reference and Sample Genome
-6. Press Run Call and wait for the server to finish processing
-7. Press "Ok" to restart when the alert prompt appears
 
-After viewing the results, you may go back to the home page to answer the evaluation form! ^^
-      </pre>
-      </v-card-text>
 
       <v-btn @click="deleteCall" style="float: right;" color="red">Delete Call</v-btn>
       <v-btn @click="runCall" style="float: right;" v-if="this.status!='Running'" color="info">Run Call</v-btn>
@@ -147,7 +164,8 @@ export default {
                       "name": "VCF File",
                       "type": "variant",
                       "format": "vcf",
-                      "url": this.vcf
+                      "url": this.vcf,
+                      "height": 100
                     }
                 ]
               };

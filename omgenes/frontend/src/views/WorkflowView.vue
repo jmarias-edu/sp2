@@ -68,6 +68,19 @@ rule variant_calling:
         """
 
       </pre>
+
+    <v-card-text>
+        Above is the Snakemake workflow used to create the VCF Files from a reference and sample genome. It makes use of a simple alignment-based process to create VCF files. <br><br>
+        This workflow is run in a Conda Environment with BWA, BCFTools, and Samtools which has various tools needed in the different steps of the Variant Call. <br><br>
+        The variant call is done through "rules" done in the order that you see above, and a simple explanation of the process is below:<br>
+        1. Index files for the reference genomes are created using BWA<br>
+        2. Using the created index files, the sample genome is then mapped to the reference genome using BWA and Samtools<br>
+        3. The map of the sample genome is then sorted using Samtools<br>
+        4. The sorted map of the sample genome is then indexed using Samtools<br>
+        5. Finally, using the sorted map of the sample genome and the reference genome, BCFTools then runs the final Variant Call<br>
+        <br>
+        This workflow was based off the Tutorial Workflow from Snakemake but adjusted to add the indexing for the reference genome and dynamicity of files.
+    </v-card-text>
     </v-card>
   </div>
 </template>

@@ -15,9 +15,9 @@
     </v-card>
 
 
-    <v-card title="Continuation of Instructions">
+    <v-card title="VCF Read Instructions" color="info" class="pa-4 w-100">
       <v-card-text>
-      <pre>
+      <pre style="white-space: pre-wrap;">
 Viewing existing VCF Files with Reference Genome
 1. Open the Create New Read page from the Navigation Drawer on the left.
 2. Input a name for the Variant Call Read.

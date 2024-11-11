@@ -1,10 +1,6 @@
 <template>
   <div>
     <v-card title="Welcome to OMGenes!" class="pa-4">
-      
-      <v-card-text> 
-        OMGenes is a web application for viewing VCF files and creating them through a simple Variant Call script.
-      </v-card-text>
 
       <v-card class="ma-4">
           <v-card-title>
@@ -15,13 +11,18 @@
       </v-card>
 
       <v-card-text>
-      <pre>
+      <pre style="white-space: pre-wrap;">
 Hi! I am Jarem Thimoty M. Arias, currently a student in the University of the Philippines Los Banos under BS Computer Science and finishing up my Special Problem which is the website you currently on now!
 
 If you are reading this, it means that hopefully you've agreed to become a tester for my webapp! (Yay!)
 
 Like you, I want to keep the testing short and sweet for everyone so I'll boil down what needs to happen:
-OMGenes is a website for viewing
+
+OMGenes is a website for viewing and creating VCF Files through an open-source Genome Browser and Variant Caller. I have provided the files needed in the zip file above for testing, you just have to follow the rest of the instructions below (It'll be quick I promise ^^)
+
+For testing, I will be providing Reference Genomes, VCF Files, and Sample Genomes for Yeast and COVID-19 for testing.
+
+Below are the full instructions, but each step will have a blue section to guide you!
 
 Preparation
 1. Sign-up/Log-in with your Google Account on the upper right by the navigation bar
@@ -41,7 +42,7 @@ Creating new VCF File with a Reference and Sample Genome
 3. Upload the Reference Genome File and the Sample Genome File in the Variant Call Folder in their respective containers
 4. Press Create
 5. Click on the name of the newly created Variant Call
-6. Press Run Call and wait for the server to finish processing
+6. Press Run Call at the bottom of the page and wait for the server to finish processing
 7. Press "Ok" to restart when the alert prompt appears
 
 Evaluation

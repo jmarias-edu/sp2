@@ -10,9 +10,9 @@
       </v-form>
     </v-card>
 
-    <v-card title="Continuation of Instructions">
+    <v-card title="Variant Call Creation instructions" color="info" class="pa-4 w-100">
       <v-card-text>
-      <pre>
+      <pre style="white-space: pre-wrap;">
 Creating new VCF File with a Reference and Sample Genome
 1. Open the Create New Call page from the Navigation Drawer on the left
 2. Input a name for the Variant Call

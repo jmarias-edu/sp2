@@ -1,6 +1,20 @@
 <template>
   <div class="">
 
+    <v-card title="Viewing the VCF File" class="pa-4 w-100" color="info">
+      <v-card-text>
+        <pre style="white-space: pre-wrap;">
+You should now see the files you uploaded below as downloadable files and displayed in the Genome Browser
+
+Zoom in the IGV Browser to see the Reference Genome. You may also click on the VCF File Track to see more details
+
+The reference genome and VCF File I provided for the test is from Chromosome I of Yeast (Sacchoromyces cerivisae)
+
+You may proceed to testing the Variant Calling function by pressing "Create New Call" on the left
+        </pre>
+      </v-card-text>
+    </v-card>
+
     <v-card :title="`${this.name} Files`" class="pa-4 w-100">
         <v-card class="ma-4">
           <v-card-title>
@@ -22,16 +36,8 @@
         <div id="igv-div"></div>
     </v-card>
 
-    <v-card title="Continuation of Instructions">
-      <v-card-text>
-        <pre>
-You may proceed to testing the Variant Calling function by pressing "Create New Call"
-        </pre>
-      </v-card-text>
-    </v-card>
-
     <v-card title="Variant Read Settings" class="pa-4 w-100">
-      <v-btn @click="deleteRead" style="float: right;" color="red">Delete Project</v-btn>
+      <v-btn @click="deleteRead" style="float: right;" color="red">Delete VCF Read</v-btn>
     </v-card>
 
   </div>

@@ -8,11 +8,11 @@
 
     <v-card class="pa-2 my-1" title="About the Technology Stack">
       <v-card-text>
-        Frontend: Vue.js
-        Backend: Django
-        Deployment: Digital Ocean, Name Silo, Traefik, Nginx, Docker
-        Variant Calling Workflow: Snakemake, Conda, BWA, Samtools, Bcftools
-        Genome Browser: IGV Genome Browser
+        Frontend: Vue.js<br>
+        Backend: Django<br>
+        Deployment: Digital Ocean, Name Silo, Traefik, Nginx, Docker<br>
+        Variant Calling Workflow: Snakemake, Conda, BWA, Samtools, BCFtools<br>
+        Genome Browser: IGV Genome Browser<br>
         Cookiecutter Django was used as a template for entire project
       </v-card-text>
     </v-card>
