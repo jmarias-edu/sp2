@@ -15,15 +15,16 @@
     </v-card>
 
 
-    <v-card title="VCF Read Instructions" color="info" class="pa-4 w-100">
+    <v-card color="info" class="pa-4 w-100">
       <v-card-text>
       <pre style="white-space: pre-wrap;">
-Viewing existing VCF Files with Reference Genome
-1. Open the Create New Read page from the Navigation Drawer on the left.
-2. Input a name for the Variant Call Read.
-3. Upload the Reference Genome File and the VCF File in the Variant Read Folder in their respective containers.
-4. Press Create.
-5. Click the name of the newly created Variant Call Read to view your VCF File in the IGV Genome Browser.
+<h3>Viewing existing VCF Files with Reference Genome</h3>
+1. <b>Open</b> the <b>Create New Read page</b> from the Navigation Drawer on the left.
+2. <b>Input</b> a <b>name</b> for the Variant Call Read.
+3. <b>Upload</b> the <b>Reference Genome File</b> and the <b>VCF File</b> from the Variant Read Folder in their respective containers.
+4. <b>Press Create</b>.
+5. <b>Click</b> the name of the <b>newly created Variant Call Read</b> to view your VCF File in the IGV Genome Browser.
+
       </pre>
       </v-card-text>
     </v-card>

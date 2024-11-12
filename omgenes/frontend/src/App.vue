@@ -30,7 +30,7 @@
         <div v-if="isEmpty(user)"></div>
         <div v-else>
           <v-toolbar-title class="font-weight-bold">VCF Reads</v-toolbar-title>
-          <v-list-item to="/newproj" link title="Create New Read"></v-list-item>
+          <v-list-item to="/newproj" link><h3>Create New Read</h3></v-list-item>
           
           <v-list-item v-for="read in reads" 
           :key="read.id" 
@@ -40,9 +40,9 @@
               <v-list-item-title>{{ read.name }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
+          <v-divider></v-divider>
           <v-toolbar-title class="font-weight-bold">Variant Calls</v-toolbar-title>
-          <v-list-item to="/newcall" link title="Create New Call"></v-list-item>
+          <v-list-item to="/newcall" link><h3>Create New Call</h3></v-list-item>
 
           <v-list-item v-for="call in calls" 
           :key="call.id" 

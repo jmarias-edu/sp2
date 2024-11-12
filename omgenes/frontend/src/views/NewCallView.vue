@@ -10,15 +10,15 @@
       </v-form>
     </v-card>
 
-    <v-card title="Variant Call Creation instructions" color="info" class="pa-4 w-100">
+    <v-card color="info" class="pa-4 w-100">
       <v-card-text>
       <pre style="white-space: pre-wrap;">
-Creating new VCF File with a Reference and Sample Genome
-1. Open the Create New Call page from the Navigation Drawer on the left
-2. Input a name for the Variant Call
-3. Upload the Reference Genome File and the Sample Genome File in the Variant Call Folder in their respective containers
-4. Press Create
-5. Click on the name of the newly created Variant Call
+<h3>Creating new VCF File with a Reference and Sample Genome</h3>
+1. <b>Open</b> the <b>Create New Call</b> page from the Navigation Drawer on the left
+2. <b>Input</b> a <b>name</b> for the Variant Call
+3. <b>Upload</b> the <b>Reference Genome File</b> and the <b>Sample Genome File</b> from the Variant Call Folder in their respective containers
+4. <b>Press Create</b>
+5. <b>Click</b> on the <b>name</b> of the newly created Variant Call
       </pre>
       </v-card-text>
     </v-card>

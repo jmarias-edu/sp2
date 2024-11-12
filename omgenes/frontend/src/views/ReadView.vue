@@ -1,16 +1,17 @@
 <template>
   <div class="">
 
-    <v-card title="Viewing the VCF File" class="pa-4 w-100" color="info">
+    <v-card class="pa-4 w-100" color="info">
       <v-card-text>
         <pre style="white-space: pre-wrap;">
-You should now see the files you uploaded below as downloadable files and displayed in the Genome Browser
+<h3>Viewing the VCF File</h3>
+You should now see the files you uploaded below as <b>downloadable files</b> and <b>displayed in the Genome Browser.</b>
 
-Zoom in the IGV Browser to see the Reference Genome. You may also click on the VCF File Track to see more details
+<b>Zoom in the IGV Browser</b> to see the Reference Genome using the plus and minus buttons on the upper left of the IGV Browser. You may also <b>click on the blue squares</b> in the VCF File Track to see more details.
 
-The reference genome and VCF File I provided for the test is from Chromosome I of Yeast (Sacchoromyces cerivisae)
+The reference genome and VCF File I provided for the test is from <b>Chromosome I of Yeast</b> (Sacchoromyces cerivisae)
 
-You may proceed to testing the Variant Calling function by pressing "Create New Call" on the left
+You may proceed to testing the Variant Calling function by <b>pressing "Create New Call" on the left</b>
         </pre>
       </v-card-text>
     </v-card>
