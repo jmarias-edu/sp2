@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import VueCookies from "vue-cookies"
+import api from "@/api/api.service";
 
 const routes = [
   {
@@ -58,6 +60,27 @@ const routes = [
     name: "variantcalls",
     component: () => import('../views/CallView.vue'),
     props: true
+  },
+  {
+    path: "/admin",
+    name: "adminview",
+    component: () => import('../views/AdminView.vue'),
+    beforeEnter: async (to, from, next) => {
+      try {
+        const response = await api.post('/google/check-admin/', {token: VueCookies.get('authtoken')});
+        
+        if (response.data.admin) {
+          next();
+        } else {
+          alert('Access Denied');
+          next('/');
+        }
+      } catch (error) {
+        console.error('Error checking admin:', error);
+        alert('Access Denied');
+        next('/');
+      }
+    }
   }
 ]
 

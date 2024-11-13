@@ -77,3 +77,23 @@ def get_user_data(request):
     user_id = Token.objects.get(key=token).user_id
     user = gauthuser.objects.filter(id = user_id)[0]
     return JsonResponse({"success": True, "email": user.email, "fname":user.f_name, "lname":user.l_name})
+
+@authentication_classes([])
+@permission_classes([])
+@csrf_exempt
+@api_view(["POST"])
+def checkIfAdmin(request):
+    if request.method == 'POST':
+        try:
+            token = request.POST.get("token").split(" ")[1]
+            user_id = Token.objects.get(key=token).user_id
+            owner = gauthuser.objects.filter(id = user_id)[0]
+
+            if(owner.email=="jmarias@up.edu.ph"):
+                isAdmin = True
+            else:
+                isAdmin = False
+            
+            return JsonResponse({"admin": isAdmin}, status=200)
+        except Exception as e:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)

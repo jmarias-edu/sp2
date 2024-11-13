@@ -19,6 +19,7 @@ from .serializers import VariantCallProjectSerializer
 from .serializers import VariantCallProjectFileSerializer
 from django.http import JsonResponse
 from gauth.models import gauthuser
+from gauth.serializers import UserSerializer
 
 
 import logging
@@ -312,6 +313,61 @@ def runCall(request):
             return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+def checkAdmin(user):
+    if (user.email=="jmarias@up.edu.ph"):
+        return True
+    else:
+        return False
+
 @api_view(["POST"])
-def checkCall(request):
-    pass
+def fetchAllReads(request):
+    if request.method == 'POST':
+        try:
+            token = request.POST.get("token").split(" ")[1]
+            user_id = Token.objects.get(key=token).user_id
+            owner = gauthuser.objects.filter(id = user_id)[0]
+
+            if (checkAdmin(owner)):
+                reads = VariantRead.objects
+                serializer = VariantReadSerializer(reads, many=True)
+                return JsonResponse({"reads": serializer.data}, status=200)
+            else:
+                return JsonResponse({"reads": []}, status=200)
+
+        except Exception as e:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def fetchAllCalls(request):
+    if request.method == 'POST':
+        try:
+            token = request.POST.get("token").split(" ")[1]
+            user_id = Token.objects.get(key=token).user_id
+            owner = gauthuser.objects.filter(id = user_id)[0]
+
+            if (checkAdmin(owner)):
+                reads = VariantCallProject.objects
+                serializer = VariantCallProjectSerializer(reads, many=True)
+                return JsonResponse({"calls": serializer.data}, status=200)
+            else:
+                return JsonResponse({"calls": []}, status=200)
+
+        except Exception as e:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
+
+def fetchAllUsers(request):
+    if request.method == 'POST':
+        try:
+            token = request.POST.get("token").split(" ")[1]
+            user_id = Token.objects.get(key=token).user_id
+            owner = gauthuser.objects.filter(id = user_id)[0]
+
+            if (checkAdmin(owner)):
+                reads = gauthuser.objects
+                serializer = UserSerializer(reads, many=True)
+                return JsonResponse({"users": serializer.data}, status=200)
+            else:
+                return JsonResponse({"users": []}, status=200)
+
+        except Exception as e:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
