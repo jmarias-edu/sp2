@@ -355,6 +355,7 @@ def fetchAllCalls(request):
         except Exception as e:
             return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(["POST"])
 def fetchAllUsers(request):
     if request.method == 'POST':
         try:
