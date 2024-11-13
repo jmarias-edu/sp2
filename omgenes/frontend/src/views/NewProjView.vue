@@ -5,27 +5,25 @@
       <v-btn @click="upload">Upload</v-btn>
     </v-card> -->
 
-    <v-card title="Create New VCF Read" class="pa-4">
+    <v-card class="pa-4">
+      <v-card-title><h3>Create New VCF Read Call</h3></v-card-title>
       <v-form ref="form" v-model="valid">
         <v-text-field :rules="textRules" label="VCF Read Name" v-model="name" required></v-text-field >
-        <v-file-input :rules="fileRules" accept=".fa,.fasta,.fastq" v-model="genome" label="Reference Genome File" required></v-file-input>
-        <v-file-input :rules="fileRules" accept=".vcf" v-model="vcf" label="VCF File" required></v-file-input>
-        <v-btn @click="createProject">Create</v-btn>
+        <v-file-input :rules="fileRules" accept=".fa,.fasta,.fastq" v-model="genome" label="Reference Genome File (.fa, .fastq, .fasta)" required></v-file-input>
+        <v-file-input :rules="fileRules" accept=".vcf" v-model="vcf" label="VCF File (.vcf)" required></v-file-input>
+        <v-btn @click="createProject" color="info">Create</v-btn>
       </v-form>
     </v-card>
 
 
-    <v-card color="info" class="pa-4 w-100">
+    <v-card color="info" class="pa-4 w-100" style="display: none;">
       <v-card-text>
       <pre style="white-space: pre-wrap;">
 <h3>Viewing existing VCF Files with Reference Genome</h3>
 1. <b>Open</b> the <b>Create New Read page</b> from the Navigation Drawer on the left.
 2. <b>Input</b> a <b>name</b> for the Variant Call Read.
 3. <b>Upload</b> the <b>Reference Genome File</b> and the <b>VCF File</b> from the Variant Read Folder in their respective containers.
-4. <b>Press Create</b>.
-5. <b>Click</b> the name of the <b>newly created Variant Call Read</b> to view your VCF File in the IGV Genome Browser.
-
-      </pre>
+4. <b>Press Create</b>.</pre>
       </v-card-text>
     </v-card>
 
@@ -99,8 +97,10 @@ export default {
                   fileHandler.updateReadsLinks(updateData).then(
                     response4 => {
                       console.log(response4);
-                      this.$router.push({path: "/"});
-                      this.$router.go(0);
+                      this.$router.push({path: "/reads/"+response1.data.id}).then(()=>{
+                        window.location.reload();
+                      });
+                      
                     }
                   )
                 }

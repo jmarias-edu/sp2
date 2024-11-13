@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card color="info" class="pa-4 w-100">
+    <v-card color="info" class="pa-4 w-100" style="display: none;">
       <v-card-text>
       <pre style="white-space: pre-wrap;">
 <h3>Running the Variant Call</h3>
@@ -13,12 +13,29 @@ The <b>Genome Browser</b> will also present the <b>reference genome, vcf file, a
 
 After viewing the results, you may go access the evaluation form below!
 
-<v-btn target="_blank" href="https://forms.gle/dVRzW45ZKcfVH8RMA">Evaluation Form</v-btn>
-      </pre>
+<v-btn target="_blank" href="https://forms.gle/dVRzW45ZKcfVH8RMA">Evaluation Form</v-btn></pre>
       </v-card-text>
     </v-card>
-    <v-card :title="`${this.name} Files`" class="pa-4 w-100">
-        <v-card class="ma-4">
+    
+
+    <v-card class="pa-4 w-100" v-if="this.vcf!=null">
+      <v-card-title>
+        <h3 style="float: left;">Genome Browser View</h3>
+        <v-btn @click="deleteCall" style="float: right;" color="red">Delete Call</v-btn>
+      </v-card-title>
+
+      <div id="igv-div"></div>
+
+      <v-card-text style="display: none;">
+      <pre style="white-space: pre-wrap;">
+<h3>About the Test Files</h3>
+The reference and sample genome I provided in this test are from <b>COVID-19</b>, the <b>reference genome is the original COVID-19</b> virus and the <b>sample genome</b> is a strain of COVID that has the <b>D614G mutation</b> which caused a change in its spike protein that made it much more infectious.
+
+You may see the <b>specific mutation</b> at the position 23404, copy <b>NC_045512v2:23,404</b> to the search bar in the IGV Genome Browser to see the mutation in the VCF File, you may click the <b>dark blue bar</b> at the position to see the <b>A->G mutation</b>.</pre>
+      </v-card-text>
+
+      <v-card-title><h4>{{ this.name }} Files</h4></v-card-title>
+      <v-card class="ma-4">
           <v-card-title>
             {{ this.ref.split("/").pop() }}
             <v-btn :href="this.ref" style="float: right;" color="info">Download</v-btn>
@@ -39,33 +56,32 @@ After viewing the results, you may go access the evaluation form below!
           </v-card-title>
           <v-card-subtitle>Reference Genome</v-card-subtitle>
         </v-card>
-    </v-card>
 
-    <v-card title="Genome Browser View" class="pa-4 w-100" style="height: 600px;" v-if="this.vcf!=null">
-      <div id="igv-div"></div>
-
-      <v-card-text>
-      <pre style="white-space: pre-wrap;">
-
-<h3>About the Test Files</h3>
-The reference and sample genome I provided in this test are from <b>COVID-19</b>, the <b>reference genome is the original COVID-19</b> virus and the <b>sample genome</b> is a strain of COVID that has the <b>D614G mutation</b> which caused a change in its spike protein that made it much more infectious.
-
-You may see the <b>specific mutation</b> at the position 23404, copy <b>NC_045512v2:23,404</b> to the search bar in the IGV Genome Browser to see the mutation in the VCF File, you may click the blue bar at the position to see the <b>A->G mutation</b>.
-      </pre>
-      </v-card-text>
-    </v-card>
-
-    <v-card title="Variant Call Log" class="pa-4 w-100" v-if="this.vcf!=null">
+      <v-card-title><h4>Variant Call Log</h4></v-card-title>
       <pre class="logfile-display">{{ this.log }}</pre>
     </v-card>
 
-    <v-card title="Variant Call Settings" class="pa-4 w-100">
-
-
-
-      <v-btn @click="deleteCall" style="float: right;" color="red">Delete Call</v-btn>
-      <v-btn @click="runCall" style="float: right;" v-if="this.status!='Running'" color="info">Run Call</v-btn>
-      <p style="float: right;" v-else> Call is currently running, please wait </p>
+    <v-card v-else class="pa-4 w-100">
+      <v-card-title>
+        <h3 style="float: left">Variant Call Settings</h3>
+        <v-btn @click="deleteCall" style="float: right;" color="red">Delete Call</v-btn>
+        <v-btn @click="runCall" class= "mr-2" style="float: right;" v-if="this.status!='Running'" color="info">Run Call</v-btn>
+        <p style="float: right;" class="mr-2" v-else> Variant Call is currently running, please wait </p>
+      </v-card-title>
+      <v-card class="ma-4">
+          <v-card-title>
+            {{ this.ref.split("/").pop() }}
+            <v-btn :href="this.ref" style="float: right;" color="info">Download</v-btn>
+            </v-card-title>
+          <v-card-subtitle>Reference Genome</v-card-subtitle>
+        </v-card>
+        <v-card class="ma-4">
+          <v-card-title>
+            {{ this.genome.split("/").pop() }}
+            <v-btn :href="this.genome" style="float: right;" color="info">Download</v-btn>
+          </v-card-title>
+          <v-card-subtitle>Target Genome</v-card-subtitle>
+        </v-card>
     </v-card>
   </div>
 </template>

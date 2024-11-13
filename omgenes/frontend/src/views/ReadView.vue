@@ -1,7 +1,7 @@
 <template>
   <div class="">
 
-    <v-card class="pa-4 w-100" color="info">
+    <v-card class="pa-4 w-100" color="info" style="display: none;">
       <v-card-text>
         <pre style="white-space: pre-wrap;">
 <h3>Viewing the VCF File</h3>
@@ -9,14 +9,23 @@ You should now see the files you uploaded below as <b>downloadable files</b> and
 
 <b>Zoom in the IGV Browser</b> to see the Reference Genome using the plus and minus buttons on the upper left of the IGV Browser. You may also <b>click on the blue squares</b> in the VCF File Track to see more details.
 
-The reference genome and VCF File I provided for the test is from <b>Chromosome I of Yeast</b> (Sacchoromyces cerivisae)
+The reference genome and VCF File I provided for the test is from <b>Chromosome I of Yeast</b> (<i>Saccharomyces cerevisiae</i>)
 
 You may proceed to testing the Variant Calling function by <b>pressing "Create New Call" on the left</b>
         </pre>
       </v-card-text>
     </v-card>
 
-    <v-card :title="`${this.name} Files`" class="pa-4 w-100">
+    <v-card  class="pa-4" >
+        <v-card-title>
+          <h3 style="float: left;">Genome Browser View</h3>
+          <v-btn @click="deleteRead" style="float: right;" color="red">Delete VCF Read</v-btn>
+        </v-card-title>
+        
+        <div id="igv-div"></div>
+
+        <br>
+        <v-card-title><h4>{{ this.name }} Files</h4></v-card-title>
         <v-card class="ma-4">
           <v-card-title>
             {{ this.genome.split("/").pop() }}
@@ -31,15 +40,10 @@ You may proceed to testing the Variant Calling function by <b>pressing "Create N
           </v-card-title>
           <v-card-subtitle>VCF File</v-card-subtitle>
         </v-card>
+        
     </v-card>
 
-    <v-card title="Genome Browser View" class="pa-4" style="height: 500px;">
-        <div id="igv-div"></div>
-    </v-card>
-
-    <v-card title="Variant Read Settings" class="pa-4 w-100">
-      <v-btn @click="deleteRead" style="float: right;" color="red">Delete VCF Read</v-btn>
-    </v-card>
+    
 
   </div>
 </template>
