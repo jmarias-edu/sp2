@@ -49,8 +49,10 @@
       <tr>
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
-        <td>{{ item.genomeURL.split("/").pop() }}</td>
-        <td>{{ item.variantURL.split("/").pop() }}</td>
+        <!-- <td>{{ item.genomeURL.split("/").pop() }}</td>
+        <td>{{ item.variantURL.split("/").pop() }}</td> -->
+        <td>{{ item.genomeURL==null ? "N/A" : item.genomeURL.split("/").pop() }}</td>
+        <td>{{ item.variantURL==null ? "N/A" :item.variantURL.split("/").pop() }}</td>
         <td><v-btn color="red" @click="this.deleteRead(item.id)">Delete</v-btn></td>
       </tr>
     </template>
@@ -65,12 +67,12 @@
 
     <v-data-table
       :headers="[
-      {title:'ID', value: 'id'}, 
-      {title:'Name', value: 'name'}, 
-      {title: 'Reference Genome', value: 'referenceGenomeURL'},
-      {title: 'Sample Genome', value: 'genomeURL'},
-      {title: 'VCF File', value: 'vcfURL'},
-      {title: 'Status', value: 'status'},
+      {title:'ID'}, 
+      {title:'Name'}, 
+      {title: 'Reference Genome'},
+      {title: 'Sample Genome'},
+      {title: 'VCF File'},
+      {title: 'Status'},
       {title: 'Actions'}
       ]"
       :items="allCalls"
@@ -81,8 +83,8 @@
       <tr>
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
-        <td>{{ item.referenceGenomeURL.split("/").pop() }}</td>
-        <td>{{ item.genomeURL.split("/").pop() }}</td>
+        <td>{{ item.referenceGenomeURL==null ? "N/A" : item.referenceGenomeURL.split("/").pop() }}</td>
+        <td>{{ item.genomeURL==null ? "N/A" : item.genomeURL.split("/").pop() }}</td>
         <td>{{ item.vcfURL==null ? "N/A" : item.vcfURL.split("/").pop()}}</td>
         <td>{{ item.status }}</td>
         <td><v-btn color="red" @click="this.deleteCall(item.id)">Delete</v-btn></td>
@@ -133,17 +135,17 @@ export default {
   created(){
     adminHandler.fetchAllCalls().then((response)=>{
         console.log(response.data);
-        this.allCalls = response.data.calls;
+        this.allCalls = response.data.calls.sort((a,b) => a.id - b.id);
     });
 
     adminHandler.fetchAllReads().then((response)=>{
         console.log(response.data);
-        this.allReads = response.data.reads;
+        this.allReads = response.data.reads.sort((a,b) => a.id - b.id);
     });
 
     adminHandler.fetchAllUsers().then((response)=>{
         console.log(response.data);
-        this.allUsers = response.data.users;
+        this.allUsers = response.data.users.sort((a,b) => a.id - b.id);
     });
   }
 }
