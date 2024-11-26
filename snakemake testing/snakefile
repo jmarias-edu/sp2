@@ -1,6 +1,6 @@
-# rule all:
-#     input:
-#         "variants.vcf"
+rule all:
+    input:
+        "variants.vcf"
 
 rule refIndex:
     input:
