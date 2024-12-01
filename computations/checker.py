@@ -22,7 +22,7 @@ OMGenes_pd.rename(columns={0: 'refpos', 1: 'refvar', 2: 'qvar'}, inplace=True)
 Coronapp_pd = Coronapp_csv[["refpos", "refvar", "qvar"]]
 # print(Coronapp_csv)
 
-merged_dataframe = pd.merge(Coronapp_pd, OMGenes_pd, on='refpos', suffixes=('_coronapp', '_omgenes'), how='left').fillna("NONE")
+merged_dataframe = pd.merge(Coronapp_pd, OMGenes_pd, on='refpos', suffixes=('_coronapp', '_omgenes'), how='outer').fillna("NONE")
 
 print(merged_dataframe)
 
@@ -53,9 +53,10 @@ Recall = TP/(TP+FN)
 Precision = TP/(TP+FP)
 F1_Value = 2 * Precision * Recall / (Precision + Recall)
 
-Sensitivity = TP/(TP+FN)
 # Specificity = TN/(TN+FP)
-
+print("=====OMGenes Statistics=====")
+print(f"Total OMGenes Variants: {len(OMGenes_pd)}")
+print(f"Total Coronapp Variants: {len(Coronapp_pd)}")
 print(f"True Positives:  {TP}")
 print(f"False Positives: {FP}")
 print(f"False Negatives  {FN}")
@@ -64,5 +65,5 @@ print("=======================")
 print(f"Recall:          {Recall}")
 print(f"Precision:       {Precision}")
 print(f"F1_Value:        {F1_Value}")
-print(f"Sensitivity:     {Sensitivity}")
+# print(f"Sensitivity:     {Sensitivity}")
 # print(f"Specificity:     {Specificity}")
