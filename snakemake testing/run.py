@@ -2,24 +2,27 @@ import subprocess
 
 def run_variant_calling(ref_genome, target_genome, folder):
     # conda run -n snakemake snakemake --config ref=./data/genome.fa target=./data/A.fastq --cores 1
-    snakemake_cmd = [
-        "conda", "run", "-n", "snakemake",
-        "snakemake", 
-        "--config", 
-        f"ref={ref_genome}", 
-        f"target={target_genome}",
-        f"folder={folder}",
-        # "--latency-wait", "10",
-        # "-np", #dry run
-        "--force",
-        "--cores", "1", f"{target_genome}.vcf"
-    ]
-
     # snakemake_cmd = [
-    #     # "conda", "run", "-n", "snakemake",
-    #     "snakemake", 
-    #     "--cores", "1", "variants.vcf"
+    #     "conda", "run", "-n", "snakemake",
+    #     "snakemake",
+    #     "--config",
+    #     f"ref={ref_genome}",
+    #     f"target={target_genome}",
+    #     f"folder={folder}",
+    #     # "--latency-wait", "10",
+    #     "-np", #dry run
+    #     "--force",
+    #     "--cores", "1", f"{target_genome}.vcf"
     # ]
+
+    snakemake_cmd = [
+        "conda", "run", "-n", "snakemake", "snakemake",
+        "--force", "--dag",
+        "--config",
+        f"ref={ref_genome}",
+        f"target={target_genome}",
+        f"folder={folder}"
+    ]
     
     try:
         # Run Snakemake with subprocess

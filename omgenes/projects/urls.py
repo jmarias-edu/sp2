@@ -13,6 +13,9 @@ from .views import fetchCalls
 from .views import fetchCall
 from .views import deleteCall
 from .views import runCall
+from .views import fetchAllReads
+from .views import fetchAllCalls
+from .views import fetchAllUsers
 
 urlpatterns = [
     path('upload/', upload_file, name='upload-file'),
@@ -32,5 +35,9 @@ urlpatterns = [
     path('fetchcalls/', fetchCalls, name="fetch-calls"),
     path('fetchcall/', fetchCall, name="fetch-call"),
     path('deletecall/', deleteCall, name="delete-call"),
-    path('runcall/', runCall, name="run-call")
+    path('runcall/', runCall, name="run-call"),
+    
+    path('fetchAllReads/', fetchAllReads, name="all-reads"),
+    path('fetchAllCalls/', fetchAllCalls, name="all-calls"),
+    path('fetchAllUsers/', fetchAllUsers, name="all-users"),
 ]

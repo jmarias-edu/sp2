@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import VueCookies from "vue-cookies"
+import api from "@/api/api.service";
 
 const routes = [
   {
@@ -14,6 +16,22 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/GenomeBrowser.vue')
+  },
+  {
+    path: '/about',
+    name: 'about',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  },
+  {
+    path: '/workflow',
+    name: 'workflow',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/WorkflowView.vue')
   },
   {
     path: '/newproj',
@@ -42,6 +60,27 @@ const routes = [
     name: "variantcalls",
     component: () => import('../views/CallView.vue'),
     props: true
+  },
+  {
+    path: "/admin",
+    name: "adminview",
+    component: () => import('../views/AdminView.vue'),
+    beforeEnter: async (to, from, next) => {
+      try {
+        const response = await api.post('/google/check-admin/', {token: VueCookies.get('authtoken')});
+        
+        if (response.data.admin) {
+          next();
+        } else {
+          alert('Access Denied');
+          next('/');
+        }
+      } catch (error) {
+        console.error('Error checking admin:', error);
+        alert('Access Denied');
+        next('/');
+      }
+    }
   }
 ]
 

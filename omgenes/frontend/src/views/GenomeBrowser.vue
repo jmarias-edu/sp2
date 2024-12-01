@@ -1,6 +1,7 @@
 <template>
-  <v-card class="pa-4" title="Sample VCF view of a saccharomyces cerevisiae VCF file using IGV Genome Browser">
-    <div id="igv-div"></div>
+  <v-card class="pa-4">
+    <v-card-title><h3>Sample VCF view of a saccharomyces cerevisiae VCF file using IGV Genome Browser</h3></v-card-title>
+    <div id="igv-div" style="z-index: 100; position: relative;"></div>
   </v-card>
 </template>
 

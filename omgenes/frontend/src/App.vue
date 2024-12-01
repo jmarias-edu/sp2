@@ -4,12 +4,12 @@
         <!-- <v-app-bar-title>OMGenes</v-app-bar-title> -->
         <template v-slot:prepend>
           <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
-          <img src="/appbarlogo.png" style="height: 100%;"/>
+          <router-link to="/" style="height: 100%;"><img src="/appbarlogo.png" style="height: 100%;"/></router-link>
           <!-- <v-toolbar-title class="font-weight-bold ma-1">OMGenes</v-toolbar-title> -->
           <v-btn text to="/" class="ma-1">Home</v-btn>
           <v-btn text to="/genomebrowser" class="ma-1">Sample VCF</v-btn>
-          <v-btn text to="/genomebrowser" class="ma-1">About</v-btn>
-          <v-btn text to="/genomebrowser" class="ma-1">Workflow</v-btn>
+          <v-btn text to="/about" class="ma-1">About</v-btn>
+          <v-btn text to="/workflow" class="ma-1">Workflow</v-btn>
         </template>
         <template v-slot:append>
           <div v-if="isEmpty(user)">
@@ -30,28 +30,37 @@
         <div v-if="isEmpty(user)"></div>
         <div v-else>
           <v-toolbar-title class="font-weight-bold">VCF Reads</v-toolbar-title>
-          <v-list-item to="/newproj" link title="Create New Read"></v-list-item>
-          
+          <v-list-item to="/newproj" link><h3>Create VCF Read</h3></v-list-item>
+          <v-toolbar-title><h5>Your VCF Reads</h5></v-toolbar-title>
           <v-list-item v-for="read in reads" 
           :key="read.id" 
           :to="{name: 'variantreads', params: {id: read.id}}"
           link>
             <v-list-item-content>
-              <v-list-item-title>{{ read.name }}</v-list-item-title>
+              <v-list-item-title>
+                <v-icon>mdi-file-chart-outline</v-icon>
+                {{ read.name }}
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item v-if="isEmpty(this.reads)">No reads yet~</v-list-item>
 
+          <v-divider></v-divider>
           <v-toolbar-title class="font-weight-bold">Variant Calls</v-toolbar-title>
-          <v-list-item to="/newcall" link title="Create New Call"></v-list-item>
-
+          <v-list-item to="/newcall" link><h3>Create New Call</h3></v-list-item>
+          <v-toolbar-title><h5>Your Variant Calls</h5></v-toolbar-title>
           <v-list-item v-for="call in calls" 
           :key="call.id" 
           :to="{name: 'variantcalls', params: {id: call.id}}"
           link>
             <v-list-item-content>
-              <v-list-item-title>{{ call.name }}</v-list-item-title>
+              <v-list-item-title>
+                <v-icon>mdi-dna</v-icon>
+                {{ call.name }}
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item v-if="isEmpty(this.calls)">No Calls yet~</v-list-item>
           
 
 

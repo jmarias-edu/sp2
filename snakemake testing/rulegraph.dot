@@ -1,0 +1,15 @@
+digraph snakemake_dag {
+    graph[bgcolor=white, margin=0];
+    node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
+    edge[penwidth=2, color=grey];
+	0[label = "variant_calling", color = "0.22 0.6 0.85", style="rounded"];
+	1[label = "sort", color = "0.11 0.6 0.85", style="rounded"];
+	2[label = "map", color = "0.00 0.6 0.85", style="rounded"];
+	3[label = "refIndex", color = "0.33 0.6 0.85", style="rounded"];
+	4[label = "index", color = "0.44 0.6 0.85", style="rounded"];
+	1 -> 0
+	4 -> 0
+	2 -> 1
+	3 -> 2
+	1 -> 4
+}            
