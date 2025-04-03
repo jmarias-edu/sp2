@@ -280,9 +280,9 @@ def runVariantCall(variantCall):
         log = result.stderr.decode("utf-8", "strict").split("\n")[-3].split(" ")[2]
         copy = subprocess.run(["cp", log, folder])
         if(settings.BACKEND_LINK=="http://localhost:8000"):
-            variantCall.log = f"{settings.BACKEND_LINK}/media/{folder.replace("./omgenes/media/","")}/{log.replace(".snakemake/log/","")}"
+            variantCall.log = f"{settings.BACKEND_LINK}/media/{folder.replace("./omgenes/media/","")}/{log.replace("/app/.snakemake/log","")}"
         else:
-            variantCall.log = f"{settings.BACKEND_LINK}/media/{folder.replace("/app/omgenes/media","")}/{log.replace(".snakemake/log/","")}"
+            variantCall.log = f"{settings.BACKEND_LINK}/media/{folder.replace("/app/omgenes/media","")}/{log.replace("/app/.snakemake/log/","")}"
     except subprocess.CalledProcessError as e:
         # Log error and mark the job as failed
         variantCall.status = "Failed"
